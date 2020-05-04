@@ -29,12 +29,12 @@
     }
   };
 
-  export const content = {
+  export const getContent = () => {
+    return content;
+  }
+
+  export let content = {
     paragraphs: [
-      {
-        text:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. In ducimus sequi magni, quasi expedita debitis, ea tenetur quae vero illum placeat ullam omnis unde saepe. Nisi quo excepturi laudantium inventore."
-      },
       {
         text:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. In ducimus sequi magni, quasi expedita debitis, ea tenetur quae vero illum placeat ullam omnis unde saepe. Nisi quo excepturi laudantium inventore."
@@ -55,16 +55,19 @@
     font-family: Lora, sans-serif;
     font-size: 21px;
     line-height: 1.58;
+    text-align: justify;
   }
   #omnia-selection-ref {
     position: absolute;
+    pointer-events: none;
+    z-index: -1;
   }
 </style>
 
 <div id="omnia-editor" class="omnia-editor">
   <Toolbar />
   {#each content.paragraphs as paragraph}
-    <Paragraph {...paragraph} on:change={debounce(500, onChange)} />
+    <Paragraph bind:paragraph on:change={debounce(500, onChange)} />
   {/each}
 </div>
 <div id="omnia-selection-ref" />

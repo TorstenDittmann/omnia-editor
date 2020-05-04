@@ -3,10 +3,10 @@
 
   const dispatch = createEventDispatcher();
 
-  export let text;
+  export let paragraph;
 
   $: {
-    dispatch("change", text);
+    dispatch("change", paragraph);
   }
 </script>
 
@@ -16,5 +16,4 @@
     width: -webkit-fill-available;
   }
 </style>
-
-<div class="omnia-paragraph" contenteditable="true" bind:innerHTML={text} />
+<div class="omnia-paragraph" contenteditable="true" bind:innerHTML={paragraph.text} />

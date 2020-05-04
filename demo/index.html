@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -14,8 +15,25 @@
     <script type="module">
         import Editor from "../dist/index.mjs";
         const editor = new Editor({
-            target: document.getElementById("editor")
+            target: document.getElementById("editor"),
+            props: {
+                content: {
+                    paragraphs: [
+                    {
+                            text: "Lorem Ipsum"
+                        },{
+                            text: "Dolor Amet"
+                        },{
+                            text: "Let me google it for you"
+                        }
+                    ]
+                }
+            }
         })
+
+        setInterval(() => {
+            console.log(editor.getContent())
+        }, 10000)
 
     </script>
     <div id="editor">
