@@ -10,7 +10,7 @@
 
 <body>
     <script>
-        const process = {env: {}}
+        const process = { env: {} }
     </script>
     <script type="module">
         import Editor from "../dist/index.mjs";
@@ -19,12 +19,18 @@
             props: {
                 content: {
                     paragraphs: [
-                    {
-                            text: "Lorem Ipsum"
-                        },{
-                            text: "Dolor Amet"
-                        },{
-                            text: "Let me google it for you"
+                        {
+                            data: {
+                                text: "Lorem Ipsum"
+                            }
+                        }, {
+                            data: {
+                                text: "Dolor Amet"
+                            }
+                        }, {
+                            data: {
+                                text: "Let me google it for you"
+                            }
                         }
                     ]
                 }
@@ -33,7 +39,7 @@
 
         setInterval(() => {
             console.log(editor.getContent())
-        }, 10000)
+        }, 4000)
 
     </script>
     <div id="editor">

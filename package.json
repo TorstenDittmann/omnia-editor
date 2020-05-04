@@ -25,6 +25,7 @@
   "version": "0.0.1",
   "dependencies": {
     "@popperjs/core": "^2.4.0",
+    "sanitize-html": "^1.23.0",
     "throttle-debounce": "^2.1.0"
   },
   "author": "Torsten Dittmann",

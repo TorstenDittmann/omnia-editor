@@ -1,12 +1,15 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
 
   const dispatch = createEventDispatcher();
 
   export let paragraph;
+  export let element;
 
   $: {
-    dispatch("change", paragraph);
+    if (element && element === document.activeElement) {
+      dispatch("change", paragraph);
+    }
   }
 </script>
 
@@ -16,4 +19,9 @@
     width: -webkit-fill-available;
   }
 </style>
-<div class="omnia-paragraph" contenteditable="true" bind:innerHTML={paragraph.text} />
+
+<div
+  class="omnia-paragraph"
+  contenteditable="true"
+  bind:innerHTML={paragraph.data.text}
+  bind:this={element} />
