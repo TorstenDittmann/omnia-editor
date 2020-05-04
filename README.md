@@ -11,7 +11,7 @@ npm install # or yarn
 ```javascript
 import Editor from "omnia-editor";
 const editor = new Editor({
-    target: document.getElementById("editor"),
+    target: document.getElementById("editor")
     }
 })
 ```
