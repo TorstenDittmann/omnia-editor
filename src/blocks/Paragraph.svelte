@@ -13,6 +13,11 @@
       dispatch("change", data.text);
     }
   }
+  const onKeyDown = e => {
+    if(e.which === 8 && data.text.length === 0) {
+      dispatch("remove", e);
+    }
+  }
 </script>
 
 <style>
@@ -29,6 +34,7 @@
 </style>
 
 <div
+  on:keydown={onKeyDown}
   class="omnia-block omnia-paragraph"
   contenteditable="true"
   bind:innerHTML={data.text}

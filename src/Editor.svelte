@@ -18,6 +18,7 @@
   if (!window.process) {
     window.process = { env: {} };
   }
+  document.execCommand("defaultParagraphSeparator", false, "br");
 
   let editorRef;
   let toolbarRef;
@@ -80,7 +81,7 @@
   const sanitize = () => {
     content.blocks.map(block => {
       block.data.text = sanitizeHtml(block.data.text, {
-        allowedTags: ["b", "i", "em", "strong"]
+        allowedTags: ["b", "i", "em", "strong", "br"]
       });
       return block;
     });
@@ -115,6 +116,10 @@
     })
     content = content; // just for svelte <3
   }
+  const removeBlock = i => {
+      content.blocks.splice(i, 1);
+      content = content;
+  }
 </script>
 
 <style>
@@ -128,7 +133,7 @@
     text-align: justify;
   }
   :global(.omnia-block) {
-    margin: 0 1rem;
+    margin: 0.33 0;
   }
   .omnia-editor-selection {
     position: absolute;
@@ -196,6 +201,7 @@
       this={getComponent(block.type)}
       bind:data={block.data}
       on:change={debounce(500, onChange)}
+      on:remove={() => removeBlock(i)}
       {placeholder} />
   {/each}
   <Create on:create={e => addBlock(e.detail)} />

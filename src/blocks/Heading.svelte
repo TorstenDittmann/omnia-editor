@@ -20,6 +20,7 @@
     display: inline-block;
     width: -webkit-fill-available;
     outline: 0;
+    text-align: center;
   }
   .omnia-heading:empty:not(:focus):before {
     content: attr(placeholder);
