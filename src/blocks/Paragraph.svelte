@@ -1,14 +1,16 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
 
+  export let data;
+  export let placeholder;
+
   const dispatch = createEventDispatcher();
 
-  export let paragraph;
-  export let element;
+  let element;
 
   $: {
     if (element && element === document.activeElement) {
-      dispatch("change", paragraph);
+      dispatch("change", data.text);
     }
   }
 </script>
@@ -18,10 +20,16 @@
     display: inline-block;
     width: -webkit-fill-available;
   }
+  .omnia-paragraph:empty:not(:focus):before {
+    content: attr(placeholder);
+    color: grey;
+    font-style: italic;
+  }
 </style>
 
 <div
   class="omnia-paragraph"
   contenteditable="true"
-  bind:innerHTML={paragraph.data.text}
-  bind:this={element} />
+  bind:innerHTML={data.text}
+  bind:this={element}
+  {placeholder} />

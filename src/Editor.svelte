@@ -4,9 +4,18 @@
   import { createPopper } from "@popperjs/core";
   import sanitizeHtml from "sanitize-html";
 
-  import Paragraph from "./Paragraph.svelte";
+  import Title from "./blocks/Title.svelte";
+  import Paragraph from "./blocks/Paragraph.svelte";
 
   const dispatch = createEventDispatcher();
+  const blocks = {
+    paragraph: Paragraph,
+    title: Title
+  };
+
+  if (!window.process) {
+    window.process = { env: {} };
+  }
 
   let editorRef;
   let toolbarRef;
@@ -22,19 +31,6 @@
   export const autofocus = false;
   export const placeholder = "Let's write an awesome story!";
 
-  const onInit = () => {
-    dispatch("init", {});
-  };
-
-  const onChange = () => {
-    sanitize();
-    dispatch("change", {});
-  };
-
-  const onDestroy = () => {
-    dispatch("destroy", {});
-  };
-
   export const data = {
     count: {
       characters: 0,
@@ -49,8 +45,9 @@
   };
 
   export let content = {
-    paragraphs: [
+    blocks: [
       {
+        type: "paragraph",
         data: {
           text:
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. In ducimus sequi magni, quasi expedita debitis, ea tenetur quae vero illum placeat ullam omnis unde saepe. Nisi quo excepturi laudantium inventore."
@@ -68,7 +65,6 @@
 
     editorRef.addEventListener("mouseup", handleSelection);
     editorRef.addEventListener("keyup", handleSelection);
-
     editorRef.addEventListener("mousedown", event => {
       toolbar.show = false;
     });
@@ -76,12 +72,25 @@
     onInit();
   });
 
+  const onInit = () => {
+    dispatch("init", {});
+  };
+
+  const onChange = () => {
+    sanitize();
+    dispatch("change", {});
+  };
+
+  const onDestroy = () => {
+    dispatch("destroy", {});
+  };
+
   const sanitize = () => {
-    content.paragraphs.map(paragraph => {
-      paragraph.data.text = sanitizeHtml(paragraph.data.text, {
+    content.blocks.map(block => {
+      block.data.text = sanitizeHtml(block.data.text, {
         allowedTags: ["b", "i", "em", "strong"]
       });
-      return paragraph;
+      return block;
     });
   };
 
@@ -101,6 +110,10 @@
     } else {
       toolbar.show = false;
     }
+  };
+
+  const getComponent = type => {
+    return blocks[type];
   };
 </script>
 
@@ -170,8 +183,12 @@
 </style>
 
 <div class="omnia-editor" bind:this={editorRef}>
-  {#each content.paragraphs as paragraph}
-    <Paragraph bind:paragraph on:change={debounce(500, onChange)} />
+  {#each content.blocks as block}
+    <svelte:component
+      this={getComponent(block.type)}
+      bind:data={block.data}
+      on:change={debounce(500, onChange)}
+      {placeholder} />
   {/each}
 </div>
 <div class="omnia-editor-toolbar" bind:this={toolbarRef} role="tooltip">

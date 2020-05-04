@@ -9,25 +9,25 @@
 </head>
 
 <body>
-    <script>
-        const process = { env: {} }
-    </script>
     <script type="module">
         import Editor from "../dist/index.mjs";
         const editor = new Editor({
             target: document.getElementById("editor"),
             props: {
                 content: {
-                    paragraphs: [
+                    blocks: [
                         {
+                            type: "title",
                             data: {
                                 text: "Lorem Ipsum"
                             }
                         }, {
+                            type: "paragraph",
                             data: {
                                 text: "Dolor Amet"
                             }
                         }, {
+                            type: "paragraph",
                             data: {
                                 text: "Let me google it for you"
                             }
