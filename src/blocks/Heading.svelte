@@ -3,7 +3,7 @@
 
   export let data;
 
-  const placeholder = "Title";
+  const placeholder = "Heading";
   const dispatch = createEventDispatcher();
 
   let element;
@@ -16,11 +16,12 @@
 </script>
 
 <style>
-  .omnia-title {
+  .omnia-heading {
     display: inline-block;
     width: -webkit-fill-available;
+    outline: 0;
   }
-  .omnia-title:empty:not(:focus):before {
+  .omnia-heading:empty:not(:focus):before {
     content: attr(placeholder);
     color: grey;
     font-style: italic;
@@ -28,9 +29,9 @@
 </style>
 
 <h1
-  class="omnia-title"
+  class="omnia-block omnia-heading"
   contenteditable="true"
   bind:this={element}
+  bind:innerHTML={data.text}
   {placeholder}>
-  {data.text}
 </h1>

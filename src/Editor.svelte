@@ -4,13 +4,15 @@
   import { createPopper } from "@popperjs/core";
   import sanitizeHtml from "sanitize-html";
 
-  import Title from "./blocks/Title.svelte";
+  import Create from "./actions/Create.svelte";
+
+  import Heading from "./blocks/Heading.svelte";
   import Paragraph from "./blocks/Paragraph.svelte";
 
   const dispatch = createEventDispatcher();
   const blocks = {
     paragraph: Paragraph,
-    title: Title
+    heading: Heading
   };
 
   if (!window.process) {
@@ -44,17 +46,7 @@
     return content;
   };
 
-  export let content = {
-    blocks: [
-      {
-        type: "paragraph",
-        data: {
-          text:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. In ducimus sequi magni, quasi expedita debitis, ea tenetur quae vero illum placeat ullam omnis unde saepe. Nisi quo excepturi laudantium inventore."
-        }
-      }
-    ]
-  };
+  export let content;
 
   onMount(() => {
     popper = createPopper(selectionRef, toolbarRef, {
@@ -95,10 +87,8 @@
   };
 
   const handleSelection = event => {
-    if (!selection.isCollapsed) {
-      const { left, top, width, height } = selection
-        .getRangeAt(0)
-        .getBoundingClientRect();
+    if (!selection.isCollapsed && !!selection.baseNode.parentNode.closest(".omnia-block")) {
+      const { left, top, width, height } = selection.getRangeAt(0).getBoundingClientRect();
 
       selectionRef.style.left = `${left}px`;
       selectionRef.style.top = `${top}px`;
@@ -115,6 +105,16 @@
   const getComponent = type => {
     return blocks[type];
   };
+
+  const addBlock = type => {
+    content.blocks.push({
+      type: type,
+      data: {
+        text: ""
+      }
+    })
+    content = content; // just for svelte <3
+  }
 </script>
 
 <style>
@@ -123,14 +123,20 @@
     margin-left: auto;
     margin-right: auto;
     font-family: Lora, sans-serif;
-    font-size: 21px;
-    line-height: 1.58;
+    font-size: 1.25rem;
+    line-height: 2.5rem;
     text-align: justify;
+  }
+  :global(.omnia-block) {
+    margin: 0 1rem;
   }
   .omnia-editor-selection {
     position: absolute;
     pointer-events: none;
     z-index: -1;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
   .omnia-editor-toolbar .container {
     background-image: linear-gradient(
@@ -145,10 +151,12 @@
     line-height: 44px;
     display: inline-block;
     opacity: 0;
+    display: none;
     pointer-events: none;
     transition: transform 0.2s ease-in-out;
   }
   .omnia-editor-toolbar .show {
+    display: block;
     pointer-events: auto;
     animation: pop-upwards 180ms forwards linear;
     animation-delay: 0.2s;
@@ -183,13 +191,14 @@
 </style>
 
 <div class="omnia-editor" bind:this={editorRef}>
-  {#each content.blocks as block}
+  {#each content.blocks as block,i}
     <svelte:component
       this={getComponent(block.type)}
       bind:data={block.data}
       on:change={debounce(500, onChange)}
       {placeholder} />
   {/each}
+  <Create on:create={e => addBlock(e.detail)} />
 </div>
 <div class="omnia-editor-toolbar" bind:this={toolbarRef} role="tooltip">
   <div class="container" class:show={toolbar.show}>

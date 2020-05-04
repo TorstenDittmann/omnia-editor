@@ -19,6 +19,7 @@
   .omnia-paragraph {
     display: inline-block;
     width: -webkit-fill-available;
+    outline: 0;
   }
   .omnia-paragraph:empty:not(:focus):before {
     content: attr(placeholder);
@@ -28,7 +29,7 @@
 </style>
 
 <div
-  class="omnia-paragraph"
+  class="omnia-block omnia-paragraph"
   contenteditable="true"
   bind:innerHTML={data.text}
   bind:this={element}
