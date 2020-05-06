@@ -212,8 +212,8 @@
       bind:data={block.data}
       on:change={debounce(500, onChange)}
       on:remove={() => removeBlock(i)}
-      on:create={e => addBlock(e.detail)}
       {placeholder} />
+    <Create on:create={e => addBlock(e.detail)} />
   {/each}
 </div>
 <div class="omnia-editor-toolbar" bind:this={toolbarRef} role="tooltip">
