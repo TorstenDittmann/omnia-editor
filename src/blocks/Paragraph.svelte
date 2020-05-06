@@ -2,6 +2,8 @@
   import { createEventDispatcher, onMount } from "svelte";
   import { hasFocus } from "../stores";
 
+  import Create from "../actions/Create.svelte";
+
   export let data;
   export let placeholder;
   export let focus = false;
@@ -38,7 +40,7 @@
     transition: opacity .1s linear;
   }
   .omnia-paragraph-blur {
-    opacity: 0.2;
+    opacity: 0.4;
   }
   .omnia-paragraph:empty:not(:focus):before {
     content: attr(placeholder);
@@ -57,3 +59,6 @@
   bind:innerHTML={data.text}
   bind:this={element}
   {placeholder} />
+{#if focus}
+  <Create on:create />
+{/if}
