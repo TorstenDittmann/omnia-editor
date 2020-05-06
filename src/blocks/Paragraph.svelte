@@ -35,6 +35,7 @@
     display: inline-block;
     width: -webkit-fill-available;
     outline: 0;
+    transition: opacity .1s linear;
   }
   .omnia-paragraph-blur {
     opacity: 0.2;
