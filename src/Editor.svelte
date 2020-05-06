@@ -88,8 +88,13 @@
   };
 
   const handleSelection = event => {
-    if (!selection.isCollapsed && !!selection.baseNode.parentNode.closest(".omnia-block")) {
-      const { left, top, width, height } = selection.getRangeAt(0).getBoundingClientRect();
+    if (
+      !selection.isCollapsed &&
+      !!selection.baseNode.parentNode.closest(".omnia-block")
+    ) {
+      const { left, top, width, height } = selection
+        .getRangeAt(0)
+        .getBoundingClientRect();
 
       selectionRef.style.left = `${left}px`;
       selectionRef.style.top = `${top}px`;
@@ -113,13 +118,18 @@
       data: {
         text: ""
       }
-    })
-    content = content; // just for svelte <3
-  }
+    });
+    refreshContent();
+  };
+
   const removeBlock = i => {
-      content.blocks.splice(i, 1);
-      content = content;
-  }
+    content.blocks.splice(i, 1);
+    refreshContent();
+  };
+
+  const refreshContent = () => {
+    content = content;
+  };
 </script>
 
 <style>
@@ -196,7 +206,7 @@
 </style>
 
 <div class="omnia-editor" bind:this={editorRef}>
-  {#each content.blocks as block,i}
+  {#each content.blocks as block, i}
     <svelte:component
       this={getComponent(block.type)}
       bind:data={block.data}
