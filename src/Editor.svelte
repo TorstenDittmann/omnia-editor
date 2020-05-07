@@ -31,8 +31,9 @@
     show: false
   };
 
+  export let active = true;
   export const autofocus = false;
-  export const placeholder = "Let's write an awesome story!";
+  export let placeholder = "Let's write an awesome story!";
 
   export const data = {
     count: {
@@ -45,6 +46,10 @@
   export const getContent = () => {
     sanitize();
     return content;
+  };
+
+  export const setActive = bool => {
+    active = bool;
   };
 
   export let content;
@@ -210,12 +215,15 @@
     <svelte:component
       this={getComponent(block.type)}
       bind:data={block.data}
+      bind:active
       on:change={debounce(500, onChange)}
       on:remove={() => removeBlock(i)}
       {placeholder} />
-    <Create
-      on:create={e => addBlock(i, e.detail)}
-      on:remove={() => removeBlock(i)} />
+    {#if active}
+      <Create
+        on:create={e => addBlock(i, e.detail)}
+        on:remove={() => removeBlock(i)} />
+    {/if}
   {/each}
 </div>
 <div class="omnia-editor-toolbar" bind:this={toolbarRef} role="tooltip">

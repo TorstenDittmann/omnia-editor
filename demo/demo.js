@@ -6,7 +6,8 @@ const sample = localStorage.getItem("omnia-editor") ? JSON.parse(localStorage.ge
 const editor = new Editor({
     target: document.getElementById("editor"),
     props: {
-        content: sample
+        content: sample,
+        active: true
     }
 })
 
