@@ -40,4 +40,4 @@
   on:keydown={onKeyDown}
   bind:this={element}
   bind:innerHTML={data.text}
-  {placeholder} />
+  {placeholder}>...</h1>

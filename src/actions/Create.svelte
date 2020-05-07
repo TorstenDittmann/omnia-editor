@@ -25,4 +25,5 @@
 <div class="omnia-create">
 <button on:click={() => dispatch("create", "heading")}>Add Heading</button>
 <button on:click={() => dispatch("create", "paragraph")}>Add Paragraph</button>
+<button on:click={() => dispatch("remove")}>Remove</button>
 </div>

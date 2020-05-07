@@ -112,8 +112,8 @@
     return blocks[type];
   };
 
-  const addBlock = type => {
-    content.blocks.push({
+  const addBlock = (index, type) => {
+    content.blocks.splice(index + 1, 0, {
       type: type,
       data: {
         text: ""
@@ -213,7 +213,9 @@
       on:change={debounce(500, onChange)}
       on:remove={() => removeBlock(i)}
       {placeholder} />
-    <Create on:create={e => addBlock(e.detail)} />
+    <Create
+      on:create={e => addBlock(i, e.detail)}
+      on:remove={() => removeBlock(i)} />
   {/each}
 </div>
 <div class="omnia-editor-toolbar" bind:this={toolbarRef} role="tooltip">
