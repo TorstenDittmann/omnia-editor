@@ -8,11 +8,13 @@
 
   import Heading from "./blocks/Heading.svelte";
   import Paragraph from "./blocks/Paragraph.svelte";
+  import Code from "./blocks/Code.svelte";
 
   const dispatch = createEventDispatcher();
   const blocks = {
     paragraph: Paragraph,
-    heading: Heading
+    heading: Heading,
+    code: Code
   };
 
   if (!window.process) {
