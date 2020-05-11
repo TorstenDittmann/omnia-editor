@@ -24,7 +24,6 @@
 
   let editorRef;
   let toolbarRef;
-  let selectionRef;
 
   let selection;
   let popper;
@@ -57,17 +56,20 @@
   export let content;
 
   onMount(() => {
-    popper = createPopper(selectionRef, toolbarRef, {
+    const rangeRef = new RangeRef();
+    popper = createPopper(rangeRef, toolbarRef, {
       placement: "top"
     });
 
     selection = window.getSelection();
-
-    editorRef.addEventListener("mouseup", handleSelection);
-    editorRef.addEventListener("keyup", handleSelection);
-    editorRef.addEventListener("mousedown", event => {
-      toolbar.show = false;
-    });
+    rangeRef.rectChangedCallback = ({ width }) => {
+      if (width > 0) {
+        popper.update();
+        toolbar.show = true;
+      } else {
+        toolbar.show = false;
+      }
+    };
 
     onInit();
   });
@@ -94,27 +96,6 @@
     });
   };
 
-  const handleSelection = event => {
-    if (
-      !selection.isCollapsed &&
-      !!selection.baseNode.parentNode.closest(".omnia-block")
-    ) {
-      const { left, top, width, height } = selection
-        .getRangeAt(0)
-        .getBoundingClientRect();
-
-      selectionRef.style.left = `${left}px`;
-      selectionRef.style.top = `${top}px`;
-      selectionRef.style.width = `${width}px`;
-      selectionRef.style.height = `${height}px`;
-
-      popper.update();
-      toolbar.show = true;
-    } else {
-      toolbar.show = false;
-    }
-  };
-
   const getComponent = type => {
     return blocks[type];
   };
@@ -137,6 +118,59 @@
   const refreshContent = () => {
     content = content;
   };
+
+  class RangeRef {
+    constructor() {
+      this.updateRect();
+
+      const update = (evt, hide) => {
+        let selection = document.getSelection();
+        if (!selection.isCollapsed && selection.baseNode && selection.baseNode.parentNode.closest(".omnia-paragraph")) {
+          this.range =
+            selection && selection.rangeCount && selection.getRangeAt(0);
+          this.updateRect(hide);
+        }
+      };
+
+      editorRef.addEventListener("mouseup", update);
+      editorRef.addEventListener("keyup", update);
+      window.addEventListener("scroll", update);
+      document.scrollingElement.addEventListener("scroll", update);
+    }
+
+    updateRect(hide) {
+      if (!hide && this.range) {
+        this.rect = this.range.getBoundingClientRect();
+      } else {
+        this.rect = {
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: 0,
+          height: 0
+        };
+      }
+
+      this.rectChangedCallback(this.rect);
+    }
+
+    rectChangedCallback() {
+      // Abstract to be implemented
+    }
+
+    getBoundingClientRect() {
+      return this.rect;
+    }
+
+    get clientWidth() {
+      return this.rect.width;
+    }
+
+    get clientHeight() {
+      return this.rect.height;
+    }
+  }
 </script>
 
 <style>
@@ -151,14 +185,6 @@
   }
   :global(.omnia-block) {
     margin: 0.33 0;
-  }
-  .omnia-editor-selection {
-    position: absolute;
-    pointer-events: none;
-    z-index: -1;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
   }
   .omnia-editor-toolbar .container {
     background-image: linear-gradient(
@@ -235,4 +261,3 @@
     <span>3</span>
   </div>
 </div>
-<div class="omnia-editor-selection" bind:this={selectionRef} />
