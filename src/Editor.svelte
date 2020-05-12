@@ -107,11 +107,13 @@
         text: ""
       }
     });
+    onChange();
     refreshContent();
   };
 
   const removeBlock = i => {
     content.blocks.splice(i, 1);
+    onChange();
     refreshContent();
   };
 
@@ -125,10 +127,16 @@
 
       const update = (evt, hide) => {
         let selection = document.getSelection();
-        if (!selection.isCollapsed && selection.baseNode && selection.baseNode.parentNode.closest(".omnia-paragraph")) {
+        if (
+          !selection.isCollapsed &&
+          selection.baseNode &&
+          selection.baseNode.parentNode.closest(".omnia-paragraph")
+        ) {
           this.range =
             selection && selection.rangeCount && selection.getRangeAt(0);
           this.updateRect(hide);
+        } else {
+          toolbar.show = false;
         }
       };
 
@@ -194,14 +202,14 @@
     );
     background-repeat: repeat-x;
     border-radius: 5px;
-    padding: 0 10px;
+    padding: .25rem 1rem;
     color: white;
-    line-height: 44px;
     display: inline-block;
     opacity: 0;
     display: none;
     pointer-events: none;
     transition: transform 0.2s ease-in-out;
+    fill: white;
   }
   .omnia-editor-toolbar .show {
     display: block;
@@ -238,7 +246,7 @@
   }
 </style>
 
-<div class="omnia-editor" bind:this={editorRef}>
+<div class="omnia-editor" bind:this={editorRef} on:paste={sanitize}>
   {#each content.blocks as block, i}
     <svelte:component
       this={getComponent(block.type)}
@@ -256,8 +264,39 @@
 </div>
 <div class="omnia-editor-toolbar" bind:this={toolbarRef} role="tooltip">
   <div class="container" class:show={toolbar.show}>
-    <span>1</span>
-    <span>2</span>
-    <span>3</span>
+    <span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24">
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path
+          d="M8 11h4.5a2.5 2.5 0 1 0 0-5H8v5zm10 4.5a4.5 4.5 0 0 1-4.5
+          4.5H6V4h6.5a4.5 4.5 0 0 1 3.256 7.606A4.498 4.498 0 0 1 18 15.5zM8
+          13v5h5.5a2.5 2.5 0 1 0 0-5H8z" />
+      </svg>
+    </span>
+    <span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24">
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path d="M15 20H7v-2h2.927l2.116-12H9V4h8v2h-2.927l-2.116 12H15z" />
+      </svg>
+    </span>
+    <span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24">
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path
+          d="M8 3v9a4 4 0 1 0 8 0V3h2v9a6 6 0 1 1-12 0V3h2zM4 20h16v2H4v-2z" />
+      </svg>
+    </span>
   </div>
 </div>
