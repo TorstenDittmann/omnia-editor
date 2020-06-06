@@ -1,5 +1,5 @@
 {
-  "name": "omnia-editor",
+  "name": "@omnia/editor",
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
@@ -19,14 +19,16 @@
     "throttle-debounce": "^2.1.0"
   },
   "keywords": [
-    "svelte"
+    "svelte",
+    "omniawrite",
+    "editor"
   ],
   "files": [
     "src",
     "dist"
   ],
-  "description": "omnia-editor is an lightweight open source block style editor built for the modern web.",
-  "version": "v0.0.1-alpha.1",
+  "description": "@omnia/editor is an lightweight open source block style editor built for the modern web.",
+  "version": "v0.0.1-alpha.2",
   "author": "Torsten Dittmann",
   "license": "ISC"
 }
