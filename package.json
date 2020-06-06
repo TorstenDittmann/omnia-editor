@@ -30,5 +30,5 @@
   "description": "omnia-editor is an lightweight open source block style editor built for the modern web.",
   "version": "v0.0.1-alpha.1",
   "author": "Torsten Dittmann",
-  "license": "ISC"
+  "license": "MIT"
 }
