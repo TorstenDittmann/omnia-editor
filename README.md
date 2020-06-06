@@ -8,6 +8,12 @@ npm install # or yarn
 
 ## Implementing
 
+```bash
+npm i omnia-editor
+# or
+yarn add omnia-editor
+```
+
 ```javascript
 import Editor from "omnia-editor";
 const editor = new Editor({
