@@ -12,7 +12,9 @@ export default {
 	input: 'src/index.js',
 	output: [
 		{ file: pkg.module, 'format': 'es' },
-		{ file: pkg.main, 'format': 'umd', name }
+		{ file: pkg.main, 'format': 'umd', name },
+		{ file: "demo/index.mjs", 'format': 'es' }
+
 	],
 	plugins: [
 		svelte(),
