@@ -14,7 +14,7 @@
   const blocks = {
     paragraph: Paragraph,
     heading: Heading,
-    code: Code
+    code: Code,
   };
 
   if (!window.process) {
@@ -29,7 +29,7 @@
   let popper;
 
   let toolbar = {
-    show: false
+    show: false,
   };
 
   export let active = true;
@@ -40,8 +40,8 @@
     count: {
       characters: 0,
       words: 0,
-      sentences: 0
-    }
+      sentences: 0,
+    },
   };
 
   export const getContent = () => {
@@ -49,7 +49,7 @@
     return content;
   };
 
-  export const setActive = bool => {
+  export const setActive = (bool) => {
     active = bool;
   };
 
@@ -58,7 +58,7 @@
   onMount(() => {
     const rangeRef = new RangeRef();
     popper = createPopper(rangeRef, toolbarRef, {
-      placement: "top"
+      placement: "top",
     });
 
     selection = window.getSelection();
@@ -88,15 +88,15 @@
   };
 
   const sanitize = () => {
-    content.blocks.map(block => {
+    content.blocks.map((block) => {
       block.data.text = sanitizeHtml(block.data.text, {
-        allowedTags: ["b", "i", "em", "strong", "br"]
+        allowedTags: ["b", "i", "em", "strong", "br"],
       });
       return block;
     });
   };
 
-  const getComponent = type => {
+  const getComponent = (type) => {
     return blocks[type];
   };
 
@@ -104,14 +104,14 @@
     content.blocks.splice(index + 1, 0, {
       type: type,
       data: {
-        text: ""
-      }
+        text: "",
+      },
     });
     onChange();
     refreshContent();
   };
 
-  const removeBlock = i => {
+  const removeBlock = (i) => {
     content.blocks.splice(i, 1);
     onChange();
     refreshContent();
@@ -156,7 +156,7 @@
           right: 0,
           bottom: 0,
           width: 0,
-          height: 0
+          height: 0,
         };
       }
 
@@ -202,7 +202,7 @@
     );
     background-repeat: repeat-x;
     border-radius: 5px;
-    padding: .25rem 1rem;
+    padding: 0.25rem 1rem;
     color: white;
     display: inline-block;
     opacity: 0;
@@ -257,7 +257,7 @@
       {placeholder} />
     {#if active}
       <Create
-        on:create={e => addBlock(i, e.detail)}
+        on:create={(e) => addBlock(i, e.detail)}
         on:remove={() => removeBlock(i)} />
     {/if}
   {/each}

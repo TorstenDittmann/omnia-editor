@@ -18,21 +18,21 @@
   }
 
   $: {
-    if(element) {
+    if (element) {
       element.contentEditable = active;
     }
   }
 
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     if (e.which === 8 && data.text.length === 0) {
       dispatch("remove", e);
     }
   };
-  const onFocus = e => {
+  const onFocus = (e) => {
     focus = true;
     hasFocus.set(true);
   };
-  const onFocusOut = e => {
+  const onFocusOut = (e) => {
     focus = false;
     hasFocus.set(false);
   };

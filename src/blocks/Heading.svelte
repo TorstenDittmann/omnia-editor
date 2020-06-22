@@ -13,7 +13,7 @@
       dispatch("change", data.text);
     }
   }
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     if (e.which === 8 && data.text.length === 0) {
       dispatch("remove", e);
     }
@@ -40,4 +40,6 @@
   on:keydown={onKeyDown}
   bind:this={element}
   bind:innerHTML={data.text}
-  {placeholder}>...</h1>
+  {placeholder}>
+  ...
+</h1>
