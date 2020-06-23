@@ -9,12 +9,14 @@
   import Heading from "./blocks/Heading.svelte";
   import Paragraph from "./blocks/Paragraph.svelte";
   import Code from "./blocks/Code.svelte";
+  import Quote from "./blocks/Quote.svelte";
 
   const dispatch = createEventDispatcher();
   const blocks = {
     paragraph: Paragraph,
     heading: Heading,
     code: Code,
+    quote: Quote,
   };
 
   if (!window.process) {
