@@ -13,7 +13,8 @@ export default {
 	output: [
 		{ file: pkg.module, 'format': 'es' },
 		{ file: pkg.main, 'format': 'umd', name },
-		{ file: "demo/index.mjs", 'format': 'es' }
+		{ file: "demo/index.mjs", 'format': 'es' },
+		{ file: "demo/index.js", 'format': 'umd', name }
 
 	],
 	plugins: [

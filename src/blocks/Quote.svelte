@@ -16,6 +16,9 @@
     }
   }
   const onKeyDown = (e) => {
+    if (e.which === 13) {
+      e.preventDefault();
+    }
     if (e.which === 8 && data.text.length === 0) {
       dispatch("remove", e);
     }
