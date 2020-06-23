@@ -26,7 +26,7 @@
 <style>
   .omnia-heading {
     display: inline-block;
-    width: -webkit-fill-available;
+    width: 100%;
     outline: 0;
     text-align: center;
   }
