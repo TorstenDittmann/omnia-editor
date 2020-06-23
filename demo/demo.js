@@ -9,6 +9,6 @@ const editor = new Editor({
     }
 })
 
-editor.$on('change', event => {
-    console.log("onchange");
+editor.$on('save', event => {
+    console.log(event);
 });

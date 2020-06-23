@@ -1,9 +1,11 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   import { debounce } from "throttle-debounce";
+  import { isActive } from "./stores";
   import sanitizeHtml from "sanitize-html";
 
   import Create from "./actions/Create.svelte";
+  import Toolbar from "./actions/Toolbar.svelte";
 
   import Heading from "./blocks/Heading.svelte";
   import Paragraph from "./blocks/Paragraph.svelte";
@@ -18,9 +20,6 @@
     quote: Quote,
   };
 
-  if (!window.process) {
-    window.process = { env: {} };
-  }
   document.execCommand("defaultParagraphSeparator", false, "br");
 
   let editor;
@@ -47,12 +46,13 @@
   };
 
   export const setActive = (bool) => {
-    active = bool;
+    $isActive = bool;
   };
 
   export let content;
 
   onMount(() => {
+    $isActive = active;
     onInit();
   });
 
@@ -67,6 +67,11 @@
 
   const onDestroy = () => {
     dispatch("destroy", {});
+  };
+
+  const onSave = () => {
+    sanitize();
+    dispatch("save", content);
   };
 
   const sanitize = () => {
@@ -120,15 +125,15 @@
 </style>
 
 <div class="omnia-editor" bind:this={editor} on:paste={sanitize}>
+  <Toolbar on:save={onSave} on:preview={() => setActive(!$isActive)} />
   {#each content.blocks as block, i}
     <svelte:component
       this={getComponent(block.type)}
       bind:data={block.data}
-      bind:active
       on:change={debounce(500, onChange)}
       on:remove={() => removeBlock(i)}
       {placeholder} />
-    {#if active}
+    {#if $isActive}
       <Create
         on:create={(e) => addBlock(i, e.detail)}
         on:remove={() => removeBlock(i)} />
