@@ -1,11 +1,10 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
-  import { hasFocus } from "../stores";
+  import { hasFocus, isActive } from "../stores";
 
   export let data;
   export let placeholder;
   export let focus = false;
-  export let active;
 
   const dispatch = createEventDispatcher();
 
@@ -19,7 +18,7 @@
 
   $: {
     if (element) {
-      element.contentEditable = active;
+      element.contentEditable = $isActive;
     }
   }
 

@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
-  import { hasFocus } from "../stores";
+  import { hasFocus, isActive } from "../stores";
 
   export let data;
   export let focus = false;
@@ -13,6 +13,11 @@
   $: {
     if (element && element === document.activeElement) {
       dispatch("change", data.text);
+    }
+  }
+  $: {
+    if (element) {
+      element.contentEditable = $isActive;
     }
   }
   const onKeyDown = (e) => {

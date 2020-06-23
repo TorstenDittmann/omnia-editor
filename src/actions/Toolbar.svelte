@@ -1,0 +1,50 @@
+<script>
+  import IconPreview from "../icons/IconPreview.svelte";
+
+  import { createEventDispatcher } from "svelte";
+
+  import IconSave from "../icons/IconSave.svelte";
+  import IconItalic from "../icons/IconItalic.svelte";
+  import IconsBold from "../icons/IconsBold.svelte";
+  import IconCode from "../icons/IconCode.svelte";
+  import IconUnderline from "../icons/IconUnderline.svelte";
+
+  const dispatch = createEventDispatcher();
+</script>
+
+<style>
+  .omnia-toolbar {
+    position: sticky;
+    width: 100vw;
+    top: 0;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+  }
+  .omnia-seperator {
+    margin: 0 0.5rem;
+  }
+  button {
+    margin: 0.25rem;
+  }
+</style>
+
+<div class="omnia-toolbar">
+  <button on:click={() => document.execCommand('bold')}>
+    <IconsBold />
+  </button>
+  <button on:click={() => document.execCommand('italic')}>
+    <IconItalic />
+  </button>
+  <button on:click={() => document.execCommand('underline')}>
+    <IconUnderline />
+  </button>
+  <span class="omnia-seperator">|</span>
+  <button on:click={() => dispatch('preview')}>
+    <IconPreview />
+  </button>
+  <button on:click={() => dispatch('save')}>
+    <IconSave />
+  </button>
+</div>

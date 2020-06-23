@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher, onMount } from "svelte";
+  import { isActive } from "../stores";
 
   export let data;
 
@@ -13,6 +14,13 @@
       dispatch("change", data.text);
     }
   }
+
+  $: {
+    if (element) {
+      element.contentEditable = $isActive;
+    }
+  }
+
   const onKeyDown = (e) => {
     if (e.which === 13) {
       e.preventDefault();
