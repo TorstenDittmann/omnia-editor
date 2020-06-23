@@ -1,6 +1,4 @@
 <script>
-  import IconPreview from "../icons/IconPreview.svelte";
-
   import { createEventDispatcher } from "svelte";
 
   import IconSave from "../icons/IconSave.svelte";
@@ -8,6 +6,7 @@
   import IconsBold from "../icons/IconsBold.svelte";
   import IconCode from "../icons/IconCode.svelte";
   import IconUnderline from "../icons/IconUnderline.svelte";
+  import IconPreview from "../icons/IconPreview.svelte";
 
   const dispatch = createEventDispatcher();
 </script>
@@ -15,7 +14,7 @@
 <style>
   .omnia-toolbar {
     position: sticky;
-    width: 100vw;
+    width: 100%;
     top: 0;
     background-color: white;
     display: flex;

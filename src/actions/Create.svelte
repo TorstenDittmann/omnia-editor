@@ -53,14 +53,14 @@
     <IconMore />
   </div>
   <div class="omnia-create-actions">
+    <button on:click={() => dispatch('create', 'paragraph')}>
+      <IconParagraph />
+    </button>
     <button on:click={() => dispatch('create', 'quote')}>
       <IconQuote />
     </button>
     <button on:click={() => dispatch('create', 'heading')}>
       <IconHeading />
-    </button>
-    <button on:click={() => dispatch('create', 'paragraph')}>
-      <IconParagraph />
     </button>
     <button on:click={() => dispatch('create', 'code')}>
       <IconCode />

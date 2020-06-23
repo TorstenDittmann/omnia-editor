@@ -52,6 +52,7 @@ off();
 - __init__: Fires after loading the editor.
 - __change__: Fires after the content was changed.
 - __destroy__: Fires after destroying the editor.
+- __save__: Fires after clicking save in toolbar.
 
 
 ## Consuming
