@@ -77,7 +77,7 @@
     <button on:click={() => dispatch('create', 'code')}>
       <IconCode />
     </button>
-    <button on:click={() => dispatch('remove')} class="remove">
+    <button on:click={() => dispatch('remove')}>
       <IconTrash />
     </button>
   </div>

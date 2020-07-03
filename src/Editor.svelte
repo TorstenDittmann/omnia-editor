@@ -104,9 +104,11 @@
   };
 
   const removeBlock = (i) => {
-    content.blocks.splice(i, 1);
-    onChange();
-    refreshContent();
+    if (confirm("Are you sure?")) {
+      content.blocks.splice(i, 1);
+      onChange();
+      refreshContent();
+    }
   };
 
   const refreshContent = () => {
