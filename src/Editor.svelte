@@ -24,12 +24,8 @@
 
   let editor;
 
-  let toolbar = {
-    show: false,
-  };
-
   export let active = true;
-  export const autofocus = false;
+  export let toolbar = false;
   export let placeholder = "Let's write an awesome story!";
 
   export const data = {
@@ -125,7 +121,9 @@
 </style>
 
 <div class="omnia-editor" bind:this={editor} on:paste={sanitize}>
-  <Toolbar on:save={onSave} on:preview={() => setActive(!$isActive)} />
+  {#if toolbar}
+    <Toolbar on:save={onSave} on:preview={() => setActive(!$isActive)} />
+  {/if}
   {#each content.blocks as block, i}
     <svelte:component
       this={getComponent(block.type)}

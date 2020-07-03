@@ -46,6 +46,17 @@
   button.remove {
     background: indianred;
   }
+  @media (max-width: 960px) {
+    .omnia-create {
+      opacity: 1;
+    }
+    .omnia-create .omnia-create-actions {
+      opacity: 1;
+    }
+    .omnia-create .omnia-create-hint {
+      display: none;
+    }
+  }
 </style>
 
 <div class="omnia-create">

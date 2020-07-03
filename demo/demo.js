@@ -5,7 +5,8 @@ const editor = new Editor({
     target: document.getElementById("editor"),
     props: {
         content: Data,
-        active: true
+        active: true,
+        toolbar: true
     }
 })
 
