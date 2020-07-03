@@ -22,6 +22,6 @@ export default {
 		svelte(),
 		resolve(),
 		commonjs(),
-		terser()
+		terser({ output: { comments: false } })
 	]
 };
