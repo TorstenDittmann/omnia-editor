@@ -45,7 +45,16 @@
     $isActive = bool;
   };
 
-  export let content;
+  export let content = {
+    "blocks": [
+      { 
+        "type": "paragraph", 
+        "data": { 
+          "text": "" 
+        } 
+      }
+    ]
+  };
 
   onMount(() => {
     $isActive = active;
@@ -114,6 +123,7 @@
     font-size: 1.25rem;
     line-height: 2.5rem;
     text-align: justify;
+    background-color: inherit;
   }
   :global(.omnia-block) {
     margin: 0.33 0;
@@ -137,4 +147,9 @@
         on:remove={() => removeBlock(i)} />
     {/if}
   {/each}
+  {#if content.blocks.length === 0}
+    <Create
+    on:create={(e) => addBlock(0, e.detail)}
+    on:remove={() => removeBlock(0)} />
+  {/if}
 </div>

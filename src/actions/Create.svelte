@@ -32,19 +32,20 @@
   }
   .omnia-create .omnia-create-hint {
     position: absolute;
-    opacity: 1;
+    opacity: .5;
   }
   .omnia-create:hover .omnia-create-hint {
     opacity: 0;
   }
-  .omnia-seperator {
-    margin: 0 0.5rem;
-  }
   button {
     flex: 0 0 auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform .1s;
   }
-  button.remove {
-    background: indianred;
+  button:hover {
+    transform: scale(1.2);
   }
   @media (max-width: 960px) {
     .omnia-create {
@@ -76,7 +77,6 @@
     <button on:click={() => dispatch('create', 'code')}>
       <IconCode />
     </button>
-    <span class="omnia-seperator">|</span>
     <button on:click={() => dispatch('remove')} class="remove">
       <IconTrash />
     </button>

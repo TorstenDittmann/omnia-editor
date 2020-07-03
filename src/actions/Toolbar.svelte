@@ -16,16 +16,20 @@
     position: sticky;
     width: 100%;
     top: 0;
-    background-color: white;
+    background-color: inherit;
     display: flex;
     justify-content: center;
     z-index: 10;
   }
-  .omnia-seperator {
-    margin: 0 0.5rem;
-  }
   button {
     margin: 0.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform .1s;
+  }
+  button:hover {
+    transform: scale(1.2);
   }
 </style>
 
@@ -39,7 +43,6 @@
   <button on:click={() => document.execCommand('underline')}>
     <IconUnderline />
   </button>
-  <span class="omnia-seperator">|</span>
   <button on:click={() => dispatch('preview')}>
     <IconPreview />
   </button>
