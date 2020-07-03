@@ -4,3 +4,4 @@ node_modules
 /demo/index.js
 /demo/index.mjs
 .now
+.npmrc
