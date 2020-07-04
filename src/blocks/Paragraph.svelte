@@ -43,6 +43,7 @@
     width: -webkit-fill-available;
     outline: 0;
     transition: opacity 0.1s linear;
+    padding: 0 5%;
   }
   .omnia-paragraph-blur {
     opacity: 0.4;
@@ -51,6 +52,11 @@
     content: attr(placeholder);
     color: grey;
     font-style: italic;
+  }
+  @media (max-width: 960px) {
+    .omnia-paragraph {
+      padding: 0;
+    }
   }
 </style>
 

@@ -19,23 +19,11 @@
     justify-content: center;
     align-items: auto;
     align-content: start;
+    opacity: 0;
+    transition: opacity .1s;
   }
   .omnia-create:hover {
     opacity: 1;
-  }
-  .omnia-create .omnia-create-actions {
-    opacity: 0;
-    transition: opacity 0.1s linear;
-  }
-  .omnia-create:hover .omnia-create-actions {
-    opacity: 1;
-  }
-  .omnia-create .omnia-create-hint {
-    position: absolute;
-    opacity: .5;
-  }
-  .omnia-create:hover .omnia-create-hint {
-    opacity: 0;
   }
   button {
     flex: 0 0 auto;
@@ -51,20 +39,10 @@
     .omnia-create {
       opacity: 1;
     }
-    .omnia-create .omnia-create-actions {
-      opacity: 1;
-    }
-    .omnia-create .omnia-create-hint {
-      display: none;
-    }
   }
 </style>
 
 <div class="omnia-create">
-  <div class="omnia-create-hint">
-    <IconMore />
-  </div>
-  <div class="omnia-create-actions">
     <button on:click={() => dispatch('create', 'paragraph')}>
       <IconParagraph />
     </button>
@@ -80,5 +58,4 @@
     <button on:click={() => dispatch('remove')}>
       <IconTrash />
     </button>
-  </div>
 </div>

@@ -118,14 +118,17 @@
 
 <style>
   .omnia-editor {
-    width: -webkit-fill-available;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
-    font-family: Lora, sans-serif;
-    font-size: 1.25rem;
     line-height: 2.5rem;
     text-align: justify;
     background-color: inherit;
+  }
+  @media (max-width: 960px) {
+    .omnia-editor {
+      line-height: 2rem;
+    }
   }
   :global(.omnia-block) {
     margin: 0.33 0;

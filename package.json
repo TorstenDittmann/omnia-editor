@@ -4,8 +4,8 @@
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rollup -c",
-    "build:watch": "rollup -c -w --silent",
+    "build": "rollup -c --environment BUILD:production",
+    "build:watch": "rollup -c -w",
     "dev": "run-p build:watch sirv",
     "sirv": "sirv demo -D",
     "prepublishOnly": "npm run build"

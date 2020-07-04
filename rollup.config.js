@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { terser } from "rollup-plugin-terser";
 import pkg from './package.json';
 
+const prod = process.env.BUILD === 'production';
 const name = pkg.name
 	.replace(/^(@\S+\/)?(svelte-)?(\S+)/, '$3')
 	.replace(/^\w/, m => m.toUpperCase())
@@ -22,6 +23,6 @@ export default {
 		svelte(),
 		resolve(),
 		commonjs(),
-		terser({ output: { comments: false } })
+		prod && terser({ output: { comments: false } })
 	]
 };
