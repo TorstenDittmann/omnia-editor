@@ -28,13 +28,9 @@
   export let toolbar = false;
   export let placeholder = "Let's write an awesome story!";
 
-  export const data = {
-    count: {
-      characters: 0,
-      words: 0,
-      sentences: 0,
-    },
-  };
+  export let data;
+
+  let content;
 
   export const getContent = () => {
     sanitize();
@@ -45,33 +41,35 @@
     $isActive = bool;
   };
 
-  export let content = {
-    "blocks": [
-      { 
-        "type": "paragraph", 
-        "data": { 
-          "text": "" 
-        } 
-      }
-    ]
+  export const update = () => {
+    onInit();
   };
 
-  onMount(() => {
-    $isActive = active;
-    onInit();
-  });
-
   const onInit = () => {
+    $isActive = active;
+    content =
+      data === undefined || data.blocks === undefined
+        ? {
+            blocks: [
+              {
+                type: "paragraph",
+                data: {
+                  text: "",
+                },
+              },
+            ],
+          }
+        : data;
     dispatch("init", {});
   };
 
   const onChange = () => {
     sanitize();
-    dispatch("change", {});
+    dispatch("change", content);
   };
 
   const onDestroy = () => {
-    dispatch("destroy", {});
+    dispatch("destroy", content);
   };
 
   const onSave = () => {
@@ -103,8 +101,8 @@
     refreshContent();
   };
 
-  const removeBlock = (i) => {
-    if (confirm("Are you sure?")) {
+  const removeBlock = (i, force) => {
+    if (force || confirm("Are you sure?")) {
       content.blocks.splice(i, 1);
       onChange();
       refreshContent();
@@ -114,6 +112,8 @@
   const refreshContent = () => {
     content = content;
   };
+
+  onMount(onInit);
 </script>
 
 <style>
@@ -139,22 +139,24 @@
   {#if toolbar}
     <Toolbar on:save={onSave} on:preview={() => setActive(!$isActive)} />
   {/if}
-  {#each content.blocks as block, i}
-    <svelte:component
-      this={getComponent(block.type)}
-      bind:data={block.data}
-      on:change={debounce(500, onChange)}
-      on:remove={() => removeBlock(i)}
-      {placeholder} />
-    {#if $isActive}
+  {#if content && content.blocks}
+    {#each content.blocks as block, i}
+      <svelte:component
+        this={getComponent(block.type)}
+        bind:data={block.data}
+        on:change={debounce(500, onChange)}
+        on:remove={() => removeBlock(i, true)}
+        {placeholder} />
+      {#if $isActive}
+        <Create
+          on:create={(e) => addBlock(i, e.detail)}
+          on:remove={() => removeBlock(i, false)} />
+      {/if}
+    {/each}
+    {#if content.blocks.length === 0}
       <Create
-        on:create={(e) => addBlock(i, e.detail)}
-        on:remove={() => removeBlock(i)} />
+        on:create={(e) => addBlock(0, e.detail)}
+        on:remove={() => removeBlock(0, false)} />
     {/if}
-  {/each}
-  {#if content.blocks.length === 0}
-    <Create
-    on:create={(e) => addBlock(0, e.detail)}
-    on:remove={() => removeBlock(0)} />
   {/if}
 </div>

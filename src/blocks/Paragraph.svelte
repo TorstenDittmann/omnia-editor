@@ -11,12 +11,6 @@
   let element;
 
   $: {
-    if (element && element === document.activeElement) {
-      dispatch("change", data.text);
-    }
-  }
-
-  $: {
     if (element) {
       element.contentEditable = $isActive;
     }
@@ -25,6 +19,9 @@
   const onKeyDown = (e) => {
     if (e.which === 8 && data.text.length === 0) {
       dispatch("remove", e);
+    }
+    if (element && element === document.activeElement) {
+      dispatch("change", data.text);
     }
   };
   const onFocus = (e) => {
