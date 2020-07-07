@@ -49,6 +49,7 @@
     content: attr(placeholder);
     color: grey;
     font-style: italic;
+    pointer-events: none;
   }
   @media (max-width: 960px) {
     .omnia-paragraph {
