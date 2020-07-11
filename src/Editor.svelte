@@ -153,7 +153,7 @@
           on:remove={() => removeBlock(i, false)} />
       {/if}
     {/each}
-    {#if content.blocks.length === 0}
+    {#if content.blocks.length === 0 && $isActive}
       <Create
         on:create={(e) => addBlock(0, e.detail)}
         on:remove={() => removeBlock(0, false)} />
