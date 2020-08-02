@@ -5,7 +5,7 @@ console.log(Data)
 const editor = new Editor({
     target: document.getElementById("editor"),
     props: {
-        data: Data,
+        content: Data,
         active: true,
         toolbar: true
     }
