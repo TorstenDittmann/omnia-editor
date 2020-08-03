@@ -20,7 +20,7 @@
     align-items: auto;
     align-content: start;
     opacity: 0;
-    transition: opacity .1s;
+    transition: opacity 0.1s;
   }
   .omnia-create:hover {
     opacity: 1;
@@ -30,7 +30,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    transition: transform .1s;
+    transition: transform 0.1s;
   }
   button:hover {
     transform: scale(1.2);
@@ -43,19 +43,19 @@
 </style>
 
 <div class="omnia-create">
-    <button on:click={() => dispatch('create', 'paragraph')}>
-      <IconParagraph />
-    </button>
-    <button on:click={() => dispatch('create', 'quote')}>
-      <IconQuote />
-    </button>
-    <button on:click={() => dispatch('create', 'heading')}>
-      <IconHeading />
-    </button>
-    <button on:click={() => dispatch('create', 'code')}>
-      <IconCode />
-    </button>
-    <button on:click={() => dispatch('remove')}>
-      <IconTrash />
-    </button>
+  <button title="Paragraph" on:click={() => dispatch('create', 'paragraph')}>
+    <IconParagraph />
+  </button>
+  <button title="Quote" on:click={() => dispatch('create', 'quote')}>
+    <IconQuote />
+  </button>
+  <button title="Heading" on:click={() => dispatch('create', 'heading')}>
+    <IconHeading />
+  </button>
+  <button title="Create" on:click={() => dispatch('create', 'code')}>
+    <IconCode />
+  </button>
+  <button title="Delete" on:click={() => dispatch('remove')}>
+    <IconTrash />
+  </button>
 </div>
