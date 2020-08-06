@@ -80,7 +80,7 @@
   const sanitize = () => {
     content.blocks.map((block) => {
       block.data.text = sanitizeHtml(block.data.text, {
-        allowedTags: ["b", "i", "em", "strong", "br"],
+        allowedTags: ["b", "i", "em", "strong", "br", "u"],
       });
       return block;
     });
