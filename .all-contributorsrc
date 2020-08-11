@@ -13,6 +13,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "TorstenDittmann",
+      "name": "Torsten Dittmann",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1759475?v=4",
+      "profile": "https://torstendittmann.now.sh",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
