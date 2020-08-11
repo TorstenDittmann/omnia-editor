@@ -80,7 +80,7 @@
   const sanitize = () => {
     content.blocks.map((block) => {
       block.data.text = sanitizeHtml(block.data.text, {
-        allowedTags: ["b", "i", "em", "strong", "br"],
+        allowedTags: ["b", "i", "em", "strong", "br", "u"],
       });
       return block;
     });
@@ -102,7 +102,7 @@
   };
 
   const removeBlock = (i, force) => {
-    if (force || confirm("Are you sure?")) {
+    if (force || !content.blocks[i].data.text || confirm("Are you sure?")) {
       content.blocks.splice(i, 1);
       onChange();
       refreshContent();
