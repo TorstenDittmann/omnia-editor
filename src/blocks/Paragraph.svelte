@@ -2,6 +2,7 @@
   import { createEventDispatcher, onMount } from "svelte";
   import { hasFocus, isActive } from "../stores";
 
+  export let index;
   export let data;
   export let placeholder;
   export let focus = false;
@@ -22,6 +23,10 @@
     }
     if (element && element === document.activeElement) {
       dispatch("change", data.text);
+    }
+    if(e.which === 13 && data.text.length !== 0) {
+      e.preventDefault();
+      dispatch("split", window.getSelection().anchorOffset)
     }
   };
   const onFocus = (e) => {
@@ -59,6 +64,7 @@
 </style>
 
 <div
+  id={`omnia-paragraph-${index}`}
   on:keydown={onKeyDown}
   on:focus={onFocus}
   on:focusout={onFocusOut}

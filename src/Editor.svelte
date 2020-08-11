@@ -1,5 +1,5 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount, createEventDispatcher, tick } from "svelte";
   import { debounce } from "throttle-debounce";
   import { isActive } from "./stores";
   import sanitizeHtml from "sanitize-html";
@@ -109,6 +109,15 @@
     }
   };
 
+  const splitBlock = async (i, offset) => {
+    let currentText = content.blocks[i].data.text;
+    content.blocks[i].data.text = currentText.substring(0,offset);
+    addBlock(i, "paragraph");
+    content.blocks[i+1].data.text = currentText.substring(offset, currentText.length - 1);
+    await tick();
+    document.getElementById(`omnia-paragraph-${i+1}`).focus();
+  }
+
   const refreshContent = () => {
     content = content;
   };
@@ -142,9 +151,11 @@
   {#if content && content.blocks}
     {#each content.blocks as block, i}
       <svelte:component
+        index={i}
         this={getComponent(block.type)}
         bind:data={block.data}
         on:change={debounce(500, onChange)}
+        on:split={e => splitBlock(i, e.detail)}
         on:remove={() => removeBlock(i, true)}
         {placeholder} />
       {#if $isActive}
