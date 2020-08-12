@@ -18,15 +18,28 @@
   }
 
   const onKeyDown = (e) => {
-    if (e.which === 8 && data.text.length === 0) {
-      dispatch("remove", e);
+    if (e.which === 8) {
+      if (data.text.length === 0) {
+        e.preventDefault();
+        dispatch("remove", e);
+      } else if (window.getSelection().anchorOffset === 0) {
+        e.preventDefault();
+        dispatch("join", -1);
+      }
+    }
+    if (
+      e.which === 46 &&
+      data.text.length === window.getSelection().anchorOffset
+    ) {
+      e.preventDefault();
+      dispatch("join", 1);
+    }
+    if (e.which === 13 && data.text.length !== 0) {
+      e.preventDefault();
+      dispatch("split", window.getSelection().anchorOffset);
     }
     if (element && element === document.activeElement) {
       dispatch("change", data.text);
-    }
-    if(e.which === 13 && data.text.length !== 0) {
-      e.preventDefault();
-      dispatch("split", window.getSelection().anchorOffset)
     }
   };
   const onFocus = (e) => {

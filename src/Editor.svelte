@@ -111,12 +111,42 @@
 
   const splitBlock = async (i, offset) => {
     let currentText = content.blocks[i].data.text;
-    content.blocks[i].data.text = currentText.substring(0,offset);
+    content.blocks[i].data.text = currentText.substring(0, offset).trim();
     addBlock(i, "paragraph");
-    content.blocks[i+1].data.text = currentText.substring(offset, currentText.length - 1);
+    content.blocks[i + 1].data.text = currentText
+      .substring(offset, currentText.length)
+      .trim();
     await tick();
-    document.getElementById(`omnia-paragraph-${i+1}`).focus();
-  }
+    document.getElementById(`omnia-paragraph-${i + 1}`).focus();
+  };
+
+  const joinBlock = async (i, direction) => {
+    if (
+      content.blocks[i + direction] === undefined ||
+      content.blocks[i + direction].type !== "paragraph"
+    ) {
+      return false;
+    }
+    const range = document.createRange();
+    const newBlock = direction === -1 ? i + direction : i;
+    const newPosition = content.blocks[newBlock].data.text.length;
+
+    content.blocks[newBlock].data.text +=
+      content.blocks[direction === 1 ? i + direction : i].data.text;
+
+    removeBlock(direction === 1 ? i + direction : i, true);
+    await tick();
+
+    const currentElement = document.getElementById(
+      `omnia-paragraph-${newBlock}`
+    );
+    currentElement.focus();
+    range.setStart(currentElement.firstChild, newPosition);
+    range.setEnd(currentElement.firstChild, newPosition);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  };
 
   const refreshContent = () => {
     content = content;
@@ -151,11 +181,12 @@
   {#if content && content.blocks}
     {#each content.blocks as block, i}
       <svelte:component
-        index={i}
         this={getComponent(block.type)}
+        index={i}
         bind:data={block.data}
         on:change={debounce(500, onChange)}
-        on:split={e => splitBlock(i, e.detail)}
+        on:split={(e) => splitBlock(i, e.detail)}
+        on:join={(e) => joinBlock(i, e.detail)}
         on:remove={() => removeBlock(i, true)}
         {placeholder} />
       {#if $isActive}
