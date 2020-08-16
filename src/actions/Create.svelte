@@ -6,7 +6,6 @@
   import IconParagraph from "../icons/IconParagraph.svelte";
   import IconQuote from "../icons/IconQuote.svelte";
   import IconHeading from "../icons/IconHeading.svelte";
-  import IconMore from "../icons/IconMore.svelte";
 
   const dispatch = createEventDispatcher();
 </script>

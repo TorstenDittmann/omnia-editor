@@ -1,6 +1,7 @@
 <script>
-  import { onMount, createEventDispatcher, tick } from "svelte";
+  import { onMount, onDestroy, createEventDispatcher, tick } from "svelte";
   import { debounce } from "throttle-debounce";
+  import deepClone from "deep-clone";
   import { isActive } from "./stores";
   import sanitizeHtml from "sanitize-html";
 
@@ -12,25 +13,13 @@
   import Code from "./blocks/Code.svelte";
   import Quote from "./blocks/Quote.svelte";
 
-  const dispatch = createEventDispatcher();
-  const blocks = {
-    paragraph: Paragraph,
-    heading: Heading,
-    code: Code,
-    quote: Quote,
-  };
-
-  document.execCommand("defaultParagraphSeparator", false, "br");
-
-  let editor;
-
   export let active = true;
   export let toolbar = false;
   export let placeholder = "Let's write an awesome story!";
-
+  export let confirmDelete = "Are you sure?";
   export let data;
-
-  let content;
+  export let currentHistory = 0;
+  export const history = [];
 
   export const getContent = () => {
     sanitize();
@@ -43,6 +32,30 @@
 
   export const update = () => {
     onInit();
+  };
+
+  export const undo = () => {
+    if (currentHistory >= history.length - 1) return false;
+    currentHistory++;
+    content = history[currentHistory];
+    onChange();
+  };
+
+  export const redo = () => {
+    if (currentHistory < 1) return false;
+    content = history[--currentHistory];
+    onChange();
+  };
+
+  let editor;
+  let content;
+
+  const dispatch = createEventDispatcher();
+  const blocks = {
+    paragraph: Paragraph,
+    heading: Heading,
+    code: Code,
+    quote: Quote,
   };
 
   const onInit = () => {
@@ -60,6 +73,7 @@
             ],
           }
         : data;
+    addHistory();
     dispatch("init", {});
   };
 
@@ -97,15 +111,13 @@
         text: "",
       },
     });
-    onChange();
-    refreshContent();
+    fireChange();
   };
 
   const removeBlock = (i, force) => {
-    if (force || !content.blocks[i].data.text || confirm("Are you sure?")) {
+    if (force || !content.blocks[i].data.text || confirm(confirmDelete)) {
       content.blocks.splice(i, 1);
-      onChange();
-      refreshContent();
+      fireChange();
     }
   };
 
@@ -152,7 +164,22 @@
     content = content;
   };
 
+  const addHistory = () => {
+    history.unshift(deepClone(content));
+    currentHistory = 0;
+    if (history.length > 10) {
+      history.pop();
+    }
+  };
+
+  const fireChange= () => {
+    onChange();
+    addHistory();
+    refreshContent()
+  }
+
   onMount(onInit);
+  onDestroy(onDestroy);
 </script>
 
 <style>
@@ -176,7 +203,9 @@
 
 <div class="omnia-editor" bind:this={editor} on:paste={sanitize}>
   {#if toolbar}
-    <Toolbar on:save={onSave} on:preview={() => setActive(!$isActive)} />
+    <Toolbar
+      on:save={onSave}
+      on:preview={() => setActive(!$isActive)} />
   {/if}
   {#if content && content.blocks}
     {#each content.blocks as block, i}
@@ -184,7 +213,7 @@
         this={getComponent(block.type)}
         index={i}
         bind:data={block.data}
-        on:change={debounce(500, onChange)}
+        on:change={debounce(500, fireChange)}
         on:split={(e) => splitBlock(i, e.detail)}
         on:join={(e) => joinBlock(i, e.detail)}
         on:remove={() => removeBlock(i, true)}

@@ -4,7 +4,6 @@
   import IconSave from "../icons/IconSave.svelte";
   import IconItalic from "../icons/IconItalic.svelte";
   import IconsBold from "../icons/IconsBold.svelte";
-  import IconCode from "../icons/IconCode.svelte";
   import IconUnderline from "../icons/IconUnderline.svelte";
   import IconPreview from "../icons/IconPreview.svelte";
 
@@ -34,10 +33,10 @@
 </style>
 
 <div class="omnia-toolbar">
-  <button on:click={() => document.execCommand('bold')}>
+  <button on:click={() => dispatch('undoHistory')}>
     <IconsBold />
   </button>
-  <button on:click={() => document.execCommand('italic')}>
+  <button on:click={() => dispatch('redoHistory')}>
     <IconItalic />
   </button>
   <button on:click={() => document.execCommand('underline')}>
