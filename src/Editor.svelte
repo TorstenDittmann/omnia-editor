@@ -82,10 +82,6 @@
     dispatch("change", content);
   };
 
-  const onDestroy = () => {
-    dispatch("destroy", content);
-  };
-
   const onSave = () => {
     sanitize();
     dispatch("save", content);
@@ -179,7 +175,9 @@
   }
 
   onMount(onInit);
-  onDestroy(onDestroy);
+  onDestroy(() => {
+    dispatch("destroy", content);
+  });
 </script>
 
 <style>
