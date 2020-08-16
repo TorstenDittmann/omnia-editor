@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import { hasFocus, isActive } from "../stores";
 
   export let index;
@@ -42,11 +42,11 @@
       dispatch("change", data.text);
     }
   };
-  const onFocus = (e) => {
+  const onFocus = () => {
     focus = true;
     hasFocus.set(true);
   };
-  const onFocusOut = (e) => {
+  const onFocusOut = () => {
     focus = false;
     hasFocus.set(false);
   };
