@@ -1,11 +1,14 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
+  import { wrapSelection } from "../helpers";
+
   import IconSave from "../icons/IconSave.svelte";
   import IconItalic from "../icons/IconItalic.svelte";
   import IconsBold from "../icons/IconsBold.svelte";
   import IconUnderline from "../icons/IconUnderline.svelte";
   import IconPreview from "../icons/IconPreview.svelte";
+  
 
   const dispatch = createEventDispatcher();
 </script>
@@ -33,13 +36,13 @@
 </style>
 
 <div class="omnia-toolbar">
-  <button on:click={() => dispatch('undoHistory')}>
+  <button on:click={() => wrapSelection('b')}>
     <IconsBold />
   </button>
-  <button on:click={() => dispatch('redoHistory')}>
+  <button on:click={() => wrapSelection('i')}>
     <IconItalic />
   </button>
-  <button on:click={() => document.execCommand('underline')}>
+  <button on:click={() => wrapSelection('u')}>
     <IconUnderline />
   </button>
   <button on:click={() => dispatch('preview')}>
