@@ -8,6 +8,7 @@
     "build:watch": "rollup -c -w",
     "dev": "run-p build:watch sirv",
     "sirv": "sirv demo -D",
+    "lint": "eslint src/",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
@@ -21,6 +22,9 @@
     "svelte": "^3.23.2"
   },
   "dependencies": {
+    "deep-clone": "^3.0.3",
+    "eslint": "^7.7.0",
+    "eslint-plugin-svelte3": "^2.7.3",
     "sanitize-html": "^1.27.0",
     "throttle-debounce": "^2.2.1"
   },
