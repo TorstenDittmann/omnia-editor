@@ -1,23 +1,23 @@
 <script>
-  import { onMount, onDestroy, createEventDispatcher, tick } from 'svelte';
-  import { debounce } from 'throttle-debounce';
-  import deepClone from 'deep-clone';
-  import { isActive, content } from './stores';
-  import { editable, format } from './helpers';
-  import sanitizeHtml from 'sanitize-html';
+  import { onMount, onDestroy, createEventDispatcher, tick } from "svelte";
+  import { debounce } from "throttle-debounce";
+  import { isActive, content, historyStore } from "./stores";
+  import { editable, format } from "./helpers";
+  import deepClone from "deep-clone";
 
-  import Create from './actions/Create.svelte';
-  import Toolbar from './actions/Toolbar.svelte';
+  import Create from "./actions/Create.svelte";
+  import Toolbar from "./actions/Toolbar.svelte";
 
-  import Heading from './blocks/Heading.svelte';
-  import Paragraph from './blocks/Paragraph.svelte';
-  import Code from './blocks/Code.svelte';
-  import Quote from './blocks/Quote.svelte';
+  import Heading from "./blocks/Heading.svelte";
+  import Paragraph from "./blocks/Paragraph.svelte";
+  import Code from "./blocks/Code.svelte";
+  import Quote from "./blocks/Quote.svelte";
 
+  export const history = historyStore();
   export let active = true;
   export let toolbar = false;
   export let placeholder = "Let's write an awesome story!";
-  export let confirmDelete = 'Are you sure?';
+  export let confirmDelete = "Are you sure?";
   export let data;
 
   let editor;
@@ -28,28 +28,6 @@
     heading: Heading,
     code: Code,
     quote: Quote,
-  };
-
-  export const history = {
-    current: 0,
-    data: [],
-    add: () => {
-      history.data.unshift(deepClone($content));
-      history.current = 0;
-      if (history.data.length > 10) {
-        history.data.pop();
-      }
-    },
-    undo: () => {
-      if (history.current >= history.data.length - 1) return false;
-      $content = history.data[++history.current];
-      onChange();
-    },
-    redo: () => {
-      if (history.current < 1) return false;
-      $content = history.data[--history.current];
-      onChange();
-    },
   };
 
   export const toggleFormat = (tag) => {
@@ -74,15 +52,16 @@
       $content = deepClone(data);
     }
     history.add();
-    dispatch('init');
+    dispatch("init");
   };
 
   const emit = {
     change: debounce(500, () => {
-      dispatch('change', $content);
+      history.add();
+      dispatch("change", $content);
     }),
     destroy: () => {
-      dispatch('destroy', $content);
+      dispatch("destroy", $content);
     },
   };
 
@@ -90,7 +69,7 @@
     $content.blocks.splice(index + 1, 0, {
       type: type,
       data: {
-        text: '',
+        text: "",
       },
     });
     fireChange(true);
@@ -105,12 +84,10 @@
 
   const fireChange = (refresh) => {
     emit.change();
-    history.add();
     refresh && ($content = $content);
   };
 
   const handleChange = (e) => {
-    console.log($content);
     $content.blocks[e.detail.index].data.text = e.detail.content;
     fireChange(false);
   };
@@ -122,33 +99,28 @@
     return blocks[type];
   };
 
-  editable.on('split', (elem, before, after, cursor) => {
-    // before and after are document fragments with the content
-    // from before and after the cursor in it.
+  editable.on("split", (elem, before, after, cursor) => {
+    //TODO: before and after are block fragments with the content from before and after the cursor in it.
     console.log({ elem, before, after, cursor });
   });
 
-  editable.on('merge', (elem, direction, cursor) => {
+  editable.on("merge", (elem, direction, cursor) => {
+    //TODO: Fired when the user pressed forward delete (⌦) at the end or backspace (⌫) at the beginning of a block
     console.log({ elem, direction, cursor });
-    if (direction === 'after') {
-      // your code...
-    } else if (direction === 'before') {
-      // your code...
+    if (direction === "after") {
+    } else if (direction === "before") {
     }
   });
 
-  editable.on('switch', (elem, direction, cursor) => {
+  editable.on("insert", (elem, direction, cursor) => {
+    //TODO: Fired when the user presses enter (⏎) to insert a newline.
     console.log({ elem, direction, cursor });
-    if (direction === 'after') {
-      // your code...
-    } else if (direction === 'before') {
-      // your code...
-    }
   });
 
-  editable.on('insert', (elem, direction, cursor) => {
-    console.log({ elem, direction, cursor });
-    // your code...
+  editable.on("paste", (elem, blocks, cursor) => {
+    console.log({ elem, blocks, cursor });
+    //TODO:blocks is an array of strings preprocessed by editable.js.
+    // If the pasted content contains HTML it is split up by block level elements and cleaned and normalized.
   });
 </script>
 
