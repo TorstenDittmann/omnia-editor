@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
-  import { wrapSelection } from "../helpers";
+  import { format } from "../helpers";
 
   import IconSave from "../icons/IconSave.svelte";
   import IconItalic from "../icons/IconItalic.svelte";
@@ -36,13 +36,13 @@
 </style>
 
 <div class="omnia-toolbar">
-  <button on:click={() => wrapSelection('b')}>
+  <button on:click={() => format('bold')}>
     <IconsBold />
   </button>
-  <button on:click={() => wrapSelection('i')}>
+  <button on:click={() => format('italic')}>
     <IconItalic />
   </button>
-  <button on:click={() => wrapSelection('u')}>
+  <button on:click={() => format('underline')}>
     <IconUnderline />
   </button>
   <button on:click={() => dispatch('preview')}>

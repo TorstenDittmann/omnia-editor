@@ -1,13 +1,39 @@
-export const wrapSelection = tag => {
-    if (!window.getSelection) return false;
-    const ele = document.createElement(tag);
-    const sel = window.getSelection();
-    if (!sel.rangeCount) return false;
-    if (sel.isCollapsed) {
-        console.log(ele)
-    }
-    const range = sel.getRangeAt(0).cloneRange();
-    range.surroundContents(ele);
-    sel.removeAllRanges();
-    sel.addRange(range);
+import Editable from "upfront-editable";
+
+let selection;
+
+export const editable = new Editable({
+  defaultBehavior: false,
+  mouseMoveSelectionChanges: false,
+
+  // control the 'spellcheck' attribute on editable elements
+  browserSpellcheck: true
+});
+
+editable.selection((el, sel) => {
+  selection = sel;
+});
+
+export const format = tag => {
+  if (!(selection && selection.isSelection)) return false;
+  switch (tag) {
+    case "bold":
+      selection.toggleBold();
+      break;
+    case "italic":
+      selection.toggleEmphasis();
+      break;
+    case "underline":
+      selection.toggleUnderline();
+      break;
+
+    default:
+      break;
+  }
+  selection.triggerChange()
+
+}
+
+export const contenteditable = node => {
+  editable.add(node);
 }

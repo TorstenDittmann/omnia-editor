@@ -1,9 +1,9 @@
 <script>
-  import { onMount, onDestroy, createEventDispatcher, tick } from "svelte";
+  import { onMount, onDestroy, createEventDispatcher } from "svelte";
   import { debounce } from "throttle-debounce";
+  import { isActive, content, historyStore } from "./stores";
+  import { editable, format } from "./helpers";
   import deepClone from "deep-clone";
-  import { isActive } from "./stores";
-  import sanitizeHtml from "sanitize-html";
 
   import Create from "./actions/Create.svelte";
   import Toolbar from "./actions/Toolbar.svelte";
@@ -13,16 +13,28 @@
   import Code from "./blocks/Code.svelte";
   import Quote from "./blocks/Quote.svelte";
 
+  export const history = historyStore();
   export let active = true;
   export let toolbar = false;
   export let placeholder = "Let's write an awesome story!";
   export let confirmDelete = "Are you sure?";
   export let data;
-  export let currentHistory = 0;
-  export const history = [];
+
+  let editor;
+
+  const dispatch = createEventDispatcher();
+  const blocks = {
+    paragraph: Paragraph,
+    heading: Heading,
+    code: Code,
+    quote: Quote,
+  };
+
+  export const toggleFormat = (tag) => {
+    format(tag);
+  };
 
   export const getContent = () => {
-    sanitize();
     return content;
   };
 
@@ -34,149 +46,82 @@
     onInit();
   };
 
-  export const undo = () => {
-    if (currentHistory >= history.length - 1) return false;
-    currentHistory++;
-    content = history[currentHistory];
-    onChange();
-  };
-
-  export const redo = () => {
-    if (currentHistory < 1) return false;
-    content = history[--currentHistory];
-    onChange();
-  };
-
-  let editor;
-  let content;
-
-  const dispatch = createEventDispatcher();
-  const blocks = {
-    paragraph: Paragraph,
-    heading: Heading,
-    code: Code,
-    quote: Quote,
-  };
-
   const onInit = () => {
     $isActive = active;
-    content =
-      data === undefined || data.blocks === undefined
-        ? {
-            blocks: [
-              {
-                type: "paragraph",
-                data: {
-                  text: "",
-                },
-              },
-            ],
-          }
-        : data;
-    addHistory();
-    dispatch("init", {});
+    if (data && data.blocks) {
+      $content = deepClone(data);
+    }
+    history.add();
+    dispatch("init");
   };
 
-  const onChange = () => {
-    sanitize();
-    dispatch("change", content);
-  };
-
-  const onSave = () => {
-    sanitize();
-    dispatch("save", content);
-  };
-
-  const sanitize = () => {
-    content.blocks.map((block) => {
-      block.data.text = sanitizeHtml(block.data.text, {
-        allowedTags: ["b", "i", "em", "strong", "br", "u"],
-      });
-      return block;
-    });
-  };
-
-  const getComponent = (type) => {
-    return blocks[type];
+  const emit = {
+    change: debounce(500, () => {
+      history.add();
+      dispatch("change", $content);
+    }),
+    destroy: () => {
+      dispatch("destroy", $content);
+    },
   };
 
   const addBlock = (index, type) => {
-    content.blocks.splice(index + 1, 0, {
+    $content.blocks.splice(index + 1, 0, {
       type: type,
       data: {
         text: "",
       },
     });
-    fireChange();
+    fireChange(true);
   };
 
   const removeBlock = (i, force) => {
-    if (force || !content.blocks[i].data.text || confirm(confirmDelete)) {
-      content.blocks.splice(i, 1);
-      fireChange();
+    if (force || !$content.blocks[i].data.text || confirm(confirmDelete)) {
+      $content.blocks.splice(i, 1);
+      fireChange(true);
     }
   };
 
-  const splitBlock = async (i, offset) => {
-    let currentText = content.blocks[i].data.text;
-    content.blocks[i].data.text = currentText.substring(0, offset).trim();
-    addBlock(i, "paragraph");
-    content.blocks[i + 1].data.text = currentText
-      .substring(offset, currentText.length)
-      .trim();
-    await tick();
-    document.getElementById(`omnia-paragraph-${i + 1}`).focus();
+  const fireChange = (refresh) => {
+    emit.change();
+    refresh && ($content = $content);
   };
 
-  const joinBlock = async (i, direction) => {
-    if (
-      content.blocks[i + direction] === undefined ||
-      content.blocks[i + direction].type !== "paragraph"
-    ) {
-      return false;
-    }
-    const range = document.createRange();
-    const newBlock = direction === -1 ? i + direction : i;
-    const newPosition = content.blocks[newBlock].data.text.length;
-
-    content.blocks[newBlock].data.text +=
-      content.blocks[direction === 1 ? i + direction : i].data.text;
-
-    removeBlock(direction === 1 ? i + direction : i, true);
-    await tick();
-
-    const currentElement = document.getElementById(
-      `omnia-paragraph-${newBlock}`
-    );
-    currentElement.focus();
-    range.setStart(currentElement.firstChild, newPosition);
-    range.setEnd(currentElement.firstChild, newPosition);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+  const handleChange = (e) => {
+    $content.blocks[e.detail.index].data.text = e.detail.content;
+    fireChange(false);
   };
-
-  const refreshContent = () => {
-    content = content;
-  };
-
-  const addHistory = () => {
-    history.unshift(deepClone(content));
-    currentHistory = 0;
-    if (history.length > 10) {
-      history.pop();
-    }
-  };
-
-  const fireChange= () => {
-    onChange();
-    addHistory();
-    refreshContent()
-  }
 
   onMount(onInit);
-  onDestroy(() => {
-    dispatch("destroy", content);
+  onDestroy(emit.destroy);
+
+  const getComponent = (type) => {
+    return blocks[type];
+  };
+
+  editable.on("split", (elem, before, after, cursor) => {
+    //TODO: before and after are block fragments with the content from before and after the cursor in it.
+    console.log({ elem, before, after, cursor });
+  });
+
+  editable.on("merge", (elem, direction, cursor) => {
+    //TODO: Fired when the user pressed forward delete (⌦) at the end or backspace (⌫) at the beginning of a block
+    if (direction === "after") {
+      console.log({ elem, direction, cursor });
+    } else if (direction === "before") {
+      console.log({ elem, direction, cursor });
+    }
+  });
+
+  editable.on("insert", (elem, direction, cursor) => {
+    //TODO: Fired when the user presses enter (⏎) to insert a newline.
+    console.log({ elem, direction, cursor });
+  });
+
+  editable.on("paste", (elem, blocks, cursor) => {
+    console.log({ elem, blocks, cursor });
+    //TODO:blocks is an array of strings preprocessed by editable.js.
+    // If the pasted content contains HTML it is split up by block level elements and cleaned and normalized.
   });
 </script>
 
@@ -199,21 +144,17 @@
   }
 </style>
 
-<div class="omnia-editor" bind:this={editor} on:paste={sanitize}>
+<div class="omnia-editor" bind:this={editor}>
   {#if toolbar}
-    <Toolbar
-      on:save={onSave}
-      on:preview={() => setActive(!$isActive)} />
+    <Toolbar on:preview={() => setActive(!$isActive)} />
   {/if}
-  {#if content && content.blocks}
-    {#each content.blocks as block, i}
+  {#if $content && $content.blocks}
+    {#each $content.blocks as block, i}
       <svelte:component
         this={getComponent(block.type)}
         index={i}
-        bind:data={block.data}
-        on:change={debounce(500, fireChange)}
-        on:split={(e) => splitBlock(i, e.detail)}
-        on:join={(e) => joinBlock(i, e.detail)}
+        data={deepClone(block.data)}
+        on:change={handleChange}
         on:remove={() => removeBlock(i, true)}
         {placeholder} />
       {#if $isActive}
@@ -222,7 +163,7 @@
           on:remove={() => removeBlock(i, false)} />
       {/if}
     {/each}
-    {#if content.blocks.length === 0 && $isActive}
+    {#if $content.blocks.length === 0 && $isActive}
       <Create
         on:create={(e) => addBlock(0, e.detail)}
         on:remove={() => removeBlock(0, false)} />

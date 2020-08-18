@@ -1,11 +1,13 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { hasFocus, isActive } from "../stores";
+  import { editable, contenteditable } from "../helpers";
 
+  export let index;
   export let data;
+  export let placeholder;
   export let focus = false;
 
-  const placeholder = "Quote";
   const dispatch = createEventDispatcher();
 
   let element;
@@ -15,25 +17,25 @@
       element.contentEditable = $isActive;
     }
   }
-  const onKeyDown = (e) => {
-    if (e.which === 13) {
-      e.preventDefault();
+  editable.on("focus", (elem) => {
+    if (elem === element) {
+      focus = true;
+      hasFocus.set(true);
     }
-    if (e.which === 8 && data.text.length === 0) {
-      dispatch("remove", e);
+  });
+
+  editable.on("blur", (elem) => {
+    if (elem === element) {
+      focus = false;
+      hasFocus.set(false);
     }
-    if (element && element === document.activeElement) {
-      dispatch("change", data.text);
+  });
+
+  editable.on("change", (elem) => {
+    if (elem === element) {
+      dispatch("change", { index, content: editable.getContent(elem) });
     }
-  };
-  const onFocus = () => {
-    focus = true;
-    hasFocus.set(true);
-  };
-  const onFocusOut = () => {
-    focus = false;
-    hasFocus.set(false);
-  };
+  });
 </script>
 
 <style>
@@ -56,14 +58,11 @@
 </style>
 
 <q
+  id={`omnia-paragraph-${index}`}
   class="omnia-block omnia-quote"
   class:omnia-quote-blur={!focus && $hasFocus}
+  use:contenteditable
   contenteditable="true"
-  on:keydown={onKeyDown}
-  on:focus={onFocus}
-  on:focusout={onFocusOut}
   bind:this={element}
   bind:innerHTML={data.text}
-  {placeholder}>
-  ...
-</q>
+  {placeholder} />
