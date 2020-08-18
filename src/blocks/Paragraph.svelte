@@ -65,6 +65,8 @@
 
 <div
   id={`omnia-paragraph-${index}`}
+  data-index={index}
+  data-type="paragraph"
   class:omnia-paragraph-blur={!focus && $hasFocus}
   class="omnia-block omnia-paragraph"
   use:contenteditable

@@ -58,7 +58,9 @@
 </style>
 
 <q
-  id={`omnia-paragraph-${index}`}
+  id={`omnia-quote-${index}`}
+  data-index={index}
+  data-type="quote"
   class="omnia-block omnia-quote"
   class:omnia-quote-blur={!focus && $hasFocus}
   use:contenteditable

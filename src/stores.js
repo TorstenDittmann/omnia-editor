@@ -1,9 +1,7 @@
 import { writable, get } from "svelte/store";
 import deepClone from "deep-clone";
 
-export const hasFocus = writable(false);
-export const isActive = writable(true);
-export const content = writable({
+export const defaultData = {
   blocks: [
     {
       type: 'paragraph',
@@ -12,7 +10,48 @@ export const content = writable({
       },
     },
   ],
-});
+};
+
+export const hasFocus = writable(false);
+export const isActive = writable(true);
+const contentStore = () => {
+  const { subscribe, update, set } = writable(defaultData);
+  return {
+    subscribe,
+    set,
+    setBlock: (index, text) => {
+      update(n => {
+        n.blocks[+index].data.text = text;
+        return n;
+      })
+    },
+    addBlock: (index, type, text) => {
+      const n = get(content);
+      n.blocks.splice(+index, 0, {
+        type: type,
+        data: {
+          text: text,
+        },
+      });
+      set(n);
+    },
+    removeBlock: (index, force, confirmDelete) => {
+      const n = get(content);
+      if (force || !n.blocks[index].data.text || confirm(confirmDelete)) {
+        n.blocks.splice(index, 1);
+      }
+      set(n);
+    },
+    mergeBlock: (index, old) => {
+      const n = get(content);
+      n.blocks[index].data.text += n.blocks[old].data.text;
+      n.blocks.splice(old, 1);
+      set(n);
+    }
+  }
+}
+export const content = contentStore();
+
 export const historyStore = () => {
   const { subscribe, update } = writable({
     current: 0,

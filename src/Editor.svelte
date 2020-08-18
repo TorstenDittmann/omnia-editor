@@ -1,8 +1,8 @@
 <script>
-  import { onMount, onDestroy, createEventDispatcher } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
   import { debounce } from "throttle-debounce";
-  import { isActive, content, historyStore } from "./stores";
-  import { editable, format } from "./helpers";
+  import { isActive, content, historyStore, defaultData } from "./stores";
+  import { format } from "./helpers";
   import deepClone from "deep-clone";
 
   import Create from "./actions/Create.svelte";
@@ -47,82 +47,31 @@
   };
 
   const onInit = () => {
+    console.log("asd")
     $isActive = active;
     if (data && data.blocks) {
       $content = deepClone(data);
+    } else {
+      $content = deepClone(defaultData)
     }
     history.add();
     dispatch("init");
   };
 
-  const emit = {
-    change: debounce(500, () => {
-      history.add();
-      dispatch("change", $content);
-    }),
-    destroy: () => {
-      dispatch("destroy", $content);
-    },
-  };
-
-  const addBlock = (index, type) => {
-    $content.blocks.splice(index + 1, 0, {
-      type: type,
-      data: {
-        text: "",
-      },
-    });
-    fireChange(true);
-  };
-
-  const removeBlock = (i, force) => {
-    if (force || !$content.blocks[i].data.text || confirm(confirmDelete)) {
-      $content.blocks.splice(i, 1);
-      fireChange(true);
-    }
-  };
-
-  const fireChange = (refresh) => {
-    emit.change();
-    refresh && ($content = $content);
-  };
-
   const handleChange = (e) => {
     $content.blocks[e.detail.index].data.text = e.detail.content;
-    fireChange(false);
   };
 
   onMount(onInit);
-  onDestroy(emit.destroy);
+
+  content.subscribe(debounce(500, () => {
+      history.add();
+      dispatch("change", $content);
+    }))
 
   const getComponent = (type) => {
     return blocks[type];
   };
-
-  editable.on("split", (elem, before, after, cursor) => {
-    //TODO: before and after are block fragments with the content from before and after the cursor in it.
-    console.log({ elem, before, after, cursor });
-  });
-
-  editable.on("merge", (elem, direction, cursor) => {
-    //TODO: Fired when the user pressed forward delete (⌦) at the end or backspace (⌫) at the beginning of a block
-    if (direction === "after") {
-      console.log({ elem, direction, cursor });
-    } else if (direction === "before") {
-      console.log({ elem, direction, cursor });
-    }
-  });
-
-  editable.on("insert", (elem, direction, cursor) => {
-    //TODO: Fired when the user presses enter (⏎) to insert a newline.
-    console.log({ elem, direction, cursor });
-  });
-
-  editable.on("paste", (elem, blocks, cursor) => {
-    console.log({ elem, blocks, cursor });
-    //TODO:blocks is an array of strings preprocessed by editable.js.
-    // If the pasted content contains HTML it is split up by block level elements and cleaned and normalized.
-  });
 </script>
 
 <style>
@@ -155,18 +104,18 @@
         index={i}
         data={deepClone(block.data)}
         on:change={handleChange}
-        on:remove={() => removeBlock(i, true)}
+        on:remove={() => content.removeBlock(i, true, confirmDelete)}
         {placeholder} />
       {#if $isActive}
         <Create
-          on:create={(e) => addBlock(i, e.detail)}
-          on:remove={() => removeBlock(i, false)} />
+          on:create={(e) => content.addBlock(i+1, e.detail, "")}
+          on:remove={() => content.removeBlock(i, false, confirmDelete)} />
       {/if}
     {/each}
     {#if $content.blocks.length === 0 && $isActive}
       <Create
-        on:create={(e) => addBlock(0, e.detail)}
-        on:remove={() => removeBlock(0, false)} />
+        on:create={(e) => content.addBlock(0, e.detail, "")}
+        on:remove={() => content.removeBlock(0, false, confirmDelete)} />
     {/if}
   {/if}
 </div>

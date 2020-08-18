@@ -59,7 +59,9 @@
 </style>
 
 <code
-  id={`omnia-paragraph-${index}`}
+  id={`omnia-code-${index}`}
+  data-index={index}
+  data-type="code"
   class:omnia-code-blur={!focus && $hasFocus}
   class="omnia-block omnia-code"
   use:contenteditable

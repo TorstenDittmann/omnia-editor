@@ -58,7 +58,9 @@
 </style>
 
 <h1
-  id={`omnia-paragraph-${index}`}
+  id={`omnia-heading-${index}`}
+  data-index={index}
+  data-type="heading"
   class:omnia-heading-blur={!focus && $hasFocus}
   class="omnia-block omnia-heading"
   use:contenteditable
