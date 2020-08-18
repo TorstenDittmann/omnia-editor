@@ -1,7 +1,9 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { hasFocus, isActive } from "../stores";
+  import { editable, contenteditable } from '../helpers';
 
+  export let index;
   export let data;
   export let placeholder;
   export let focus = false;
@@ -16,22 +18,25 @@
     }
   }
 
-  const onKeyDown = (e) => {
-    if (e.which === 8 && data.text.length === 0) {
-      dispatch("remove", e);
+  editable.on("focus", (elem) => {
+    if (elem === element) {
+      focus = true;
+      hasFocus.set(true);
     }
-    if (element && element === document.activeElement) {
-      dispatch("change", data.text);
+  });
+
+  editable.on("blur", (elem) => {
+    if (elem === element) {
+      focus = false;
+      hasFocus.set(false);
     }
-  };
-  const onFocus = () => {
-    focus = true;
-    hasFocus.set(true);
-  };
-  const onFocusOut = () => {
-    focus = false;
-    hasFocus.set(false);
-  };
+  });
+
+  editable.on("change", (elem) => {
+    if (elem === element) {
+      dispatch("change", { index, content: editable.getContent(elem) });
+    }
+  });
 </script>
 
 <style>
@@ -54,11 +59,10 @@
 </style>
 
 <code
-  on:keydown={onKeyDown}
-  on:focus={onFocus}
-  on:focusout={onFocusOut}
+  id={`omnia-paragraph-${index}`}
   class:omnia-code-blur={!focus && $hasFocus}
   class="omnia-block omnia-code"
+  use:contenteditable
   contenteditable="true"
   bind:innerHTML={data.text}
   bind:this={element}

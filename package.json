@@ -25,8 +25,10 @@
     "deep-clone": "^3.0.3",
     "eslint": "^7.7.0",
     "eslint-plugin-svelte3": "^2.7.3",
+    "jquery": "^3.5.1",
     "sanitize-html": "^1.27.0",
-    "throttle-debounce": "^2.2.1"
+    "throttle-debounce": "^2.2.1",
+    "upfront-editable": "^2.1.1"
   },
   "keywords": [
     "svelte"

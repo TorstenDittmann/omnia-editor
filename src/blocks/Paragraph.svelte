@@ -1,6 +1,7 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import { hasFocus, isActive } from "../stores";
+  import { createEventDispatcher } from 'svelte';
+  import { hasFocus, isActive } from '../stores';
+  import { editable, contenteditable } from '../helpers';
 
   export let index;
   export let data;
@@ -17,39 +18,25 @@
     }
   }
 
-  const onKeyDown = (e) => {
-    if (e.which === 8) {
-      if (data.text.length === 0) {
-        e.preventDefault();
-        dispatch("remove", e);
-      } else if (window.getSelection().anchorOffset === 0) {
-        e.preventDefault();
-        dispatch("join", -1);
-      }
+  editable.on('focus', (elem) => {
+    if (elem === element) {
+      focus = true;
+      hasFocus.set(true);
     }
-    if (
-      e.which === 46 &&
-      data.text.length === window.getSelection().anchorOffset
-    ) {
-      e.preventDefault();
-      dispatch("join", 1);
+  });
+
+  editable.on('blur', (elem) => {
+    if (elem === element) {
+      focus = false;
+      hasFocus.set(false);
     }
-    if (e.which === 13 && data.text.length !== 0) {
-      e.preventDefault();
-      dispatch("split", window.getSelection().anchorOffset);
+  });
+
+  editable.on('change', (elem) => {
+    if (elem === element) {
+      dispatch('change', { index, content: editable.getContent(elem) });
     }
-    if (element && element === document.activeElement) {
-      dispatch("change", data.text);
-    }
-  };
-  const onFocus = () => {
-    focus = true;
-    hasFocus.set(true);
-  };
-  const onFocusOut = () => {
-    focus = false;
-    hasFocus.set(false);
-  };
+  });
 </script>
 
 <style>
@@ -78,11 +65,9 @@
 
 <div
   id={`omnia-paragraph-${index}`}
-  on:keydown={onKeyDown}
-  on:focus={onFocus}
-  on:focusout={onFocusOut}
   class:omnia-paragraph-blur={!focus && $hasFocus}
   class="omnia-block omnia-paragraph"
+  use:contenteditable
   contenteditable="true"
   bind:innerHTML={data.text}
   bind:this={element}
