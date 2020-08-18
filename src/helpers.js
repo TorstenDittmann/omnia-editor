@@ -3,7 +3,7 @@ import { content } from "./stores";
 
 let selection;
 
-const editable = new Editable({
+export const editable = new Editable({
   defaultBehavior: false,
   mouseMoveSelectionChanges: false,
   browserSpellcheck: true
