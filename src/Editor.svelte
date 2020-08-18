@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy, createEventDispatcher, tick } from "svelte";
+  import { onMount, onDestroy, createEventDispatcher } from "svelte";
   import { debounce } from "throttle-debounce";
   import { isActive, content, historyStore } from "./stores";
   import { editable, format } from "./helpers";
@@ -106,9 +106,10 @@
 
   editable.on("merge", (elem, direction, cursor) => {
     //TODO: Fired when the user pressed forward delete (⌦) at the end or backspace (⌫) at the beginning of a block
-    console.log({ elem, direction, cursor });
     if (direction === "after") {
+      console.log({ elem, direction, cursor });
     } else if (direction === "before") {
+      console.log({ elem, direction, cursor });
     }
   });
 
