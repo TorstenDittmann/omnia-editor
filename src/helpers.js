@@ -3,33 +3,37 @@ import Editable from "upfront-editable";
 let selection;
 
 export const editable = new Editable({
-    defaultBehavior: false
+  defaultBehavior: false,
+  mouseMoveSelectionChanges: false,
+
+  // control the 'spellcheck' attribute on editable elements
+  browserSpellcheck: true
 });
 
 editable.selection((el, sel) => {
-    selection = sel;
+  selection = sel;
 });
 
 export const format = tag => {
-    if (!(selection && selection.isSelection)) return false;
-    switch (tag) {
-        case "bold":
-            selection.toggleBold();
-            break;
-        case "italic":
-            selection.toggleEmphasis();
-            break;
-        case "underline":
-            selection.toggleUnderline();
-            break;
+  if (!(selection && selection.isSelection)) return false;
+  switch (tag) {
+    case "bold":
+      selection.toggleBold();
+      break;
+    case "italic":
+      selection.toggleEmphasis();
+      break;
+    case "underline":
+      selection.toggleUnderline();
+      break;
 
-        default:
-            break;
-    }
-    selection.triggerChange()
+    default:
+      break;
+  }
+  selection.triggerChange()
 
 }
 
 export const contenteditable = node => {
-    editable.add(node);
+  editable.add(node);
 }

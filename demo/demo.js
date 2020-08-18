@@ -10,6 +10,6 @@ const editor = new Editor({
     }
 })
 
-editor.$on('save', event => {
+editor.$on('change', event => {
     console.log(event);
 });
