@@ -60,7 +60,7 @@ export const historyStore = () => {
     current: 0,
     data: []
   };
-  const { subscribe, update, set } = writable(defaultHistory);
+  const { subscribe, update, set } = writable(deepClone(defaultHistory));
   return {
     subscribe,
     set,
@@ -85,6 +85,6 @@ export const historyStore = () => {
       content.set(n.data[--n.current]);
       return n;
     }),
-    reset: () => set(defaultHistory)
+    reset: () => set(deepClone(defaultHistory))
   }
 };
