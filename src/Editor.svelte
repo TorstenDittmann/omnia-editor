@@ -20,16 +20,6 @@
   export let confirmDelete = "Are you sure?";
   export let data;
 
-  let editor;
-
-  const dispatch = createEventDispatcher();
-  const blocks = {
-    paragraph: Paragraph,
-    heading: Heading,
-    code: Code,
-    quote: Quote,
-  };
-
   export const toggleFormat = (tag) => {
     format(tag);
   };
@@ -46,32 +36,44 @@
     onInit();
   };
 
+  let editor;
+
+  const dispatch = createEventDispatcher();
+  const blocks = {
+    paragraph: Paragraph,
+    heading: Heading,
+    code: Code,
+    quote: Quote,
+  };
+
   const onInit = () => {
-    console.log("asd")
     $isActive = active;
     if (data && data.blocks) {
       $content = deepClone(data);
     } else {
-      $content = deepClone(defaultData)
+      $content = deepClone(defaultData);
     }
-    history.add();
+    history.reset();
     dispatch("init");
   };
 
   const handleChange = (e) => {
+    $history.active = true;
     $content.blocks[e.detail.index].data.text = e.detail.content;
   };
-
-  onMount(onInit);
-
-  content.subscribe(debounce(500, () => {
-      history.add();
-      dispatch("change", $content);
-    }))
 
   const getComponent = (type) => {
     return blocks[type];
   };
+
+  onMount(onInit);
+
+  content.subscribe(
+    debounce(500, () => {
+      $history.active && history.add();
+      dispatch("change", $content);
+    })
+  );
 </script>
 
 <style>
@@ -108,13 +110,13 @@
         {placeholder} />
       {#if $isActive}
         <Create
-          on:create={(e) => content.addBlock(i+1, e.detail, "")}
+          on:create={(e) => content.addBlock(i + 1, e.detail, '')}
           on:remove={() => content.removeBlock(i, false, confirmDelete)} />
       {/if}
     {/each}
     {#if $content.blocks.length === 0 && $isActive}
       <Create
-        on:create={(e) => content.addBlock(0, e.detail, "")}
+        on:create={(e) => content.addBlock(0, e.detail, '')}
         on:remove={() => content.removeBlock(0, false, confirmDelete)} />
     {/if}
   {/if}

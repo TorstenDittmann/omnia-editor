@@ -1,5 +1,6 @@
-import { writable, get } from "svelte/store";
 import deepClone from "deep-clone";
+import { writable, get } from "svelte/store";
+import { setFocus } from "./helpers";
 
 export const defaultData = {
   blocks: [
@@ -34,6 +35,7 @@ const contentStore = () => {
         },
       });
       set(n);
+      setFocus(index);
     },
     removeBlock: (index, force, confirmDelete) => {
       const n = get(content);
@@ -53,15 +55,19 @@ const contentStore = () => {
 export const content = contentStore();
 
 export const historyStore = () => {
-  const { subscribe, update } = writable({
+  const defaultHistory = {
+    active: true,
     current: 0,
     data: []
-  });
+  };
+  const { subscribe, update, set } = writable(defaultHistory);
   return {
     subscribe,
+    set,
     add: () => update(n => {
       n.data.unshift(deepClone(get(content)));
       n.current = 0;
+      n.active = true;
       if (n.data.length > 10) {
         n.data.pop();
       }
@@ -69,13 +75,16 @@ export const historyStore = () => {
     }),
     undo: () => update(n => {
       if (n.current >= n.data.length - 1) return n;
+      n.active = false;
       content.set(n.data[++n.current]);
       return n;
     }),
     redo: () => update(n => {
       if (n.current < 1) return n;
+      n.active = false;
       content.set(n.data[--n.current]);
       return n;
     }),
+    reset: () => set(defaultHistory)
   }
 };
