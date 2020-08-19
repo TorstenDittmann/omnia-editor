@@ -7,7 +7,7 @@ let selection;
 export const editable = new Editable({
   defaultBehavior: false,
   mouseMoveSelectionChanges: false,
-  browserSpellcheck: true
+  browserSpellcheck: false
 });
 
 const setCursor = async (cursor, target) => {
@@ -21,6 +21,10 @@ export const setFocus = async index => {
   const elem = document.querySelector(`[data-index="${index}"]`);
   const cursor = editable.createCursor(elem);
   setCursor(cursor, elem)
+}
+
+export const setSpellCheck = bool => {
+  editable.config.browserSpellcheck = bool;
 }
 
 editable.selection((el, sel) => {

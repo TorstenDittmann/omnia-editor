@@ -15,8 +15,9 @@ export const defaultData = {
 
 export const hasFocus = writable(false);
 export const isActive = writable(true);
+export const spellCheck = writable(false);
 const contentStore = () => {
-  const { subscribe, update, set } = writable(defaultData);
+  const { subscribe, update, set } = writable(deepClone(defaultData));
   return {
     subscribe,
     set,

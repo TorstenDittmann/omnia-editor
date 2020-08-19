@@ -2,7 +2,7 @@
   import { onMount, createEventDispatcher } from "svelte";
   import { debounce } from "throttle-debounce";
   import { isActive, content, historyStore, defaultData } from "./stores";
-  import { format } from "./helpers";
+  import { format, setSpellCheck } from "./helpers";
   import deepClone from "deep-clone";
 
   import Create from "./actions/Create.svelte";
@@ -16,6 +16,7 @@
   export const history = historyStore();
   export let active = true;
   export let toolbar = false;
+  export let spellCheck = false;
   export let placeholder = "Let's write an awesome story!";
   export let confirmDelete = "Are you sure?";
   export let data;
@@ -62,18 +63,22 @@
     $content.blocks[e.detail.index].data.text = e.detail.content;
   };
 
+  const emitChange = debounce(500, () => {
+    $history.active && history.add();
+    dispatch("change", $content);
+  });
+
   const getComponent = (type) => {
     return blocks[type];
   };
 
+  setSpellCheck(spellCheck);
   onMount(onInit);
 
-  content.subscribe(
-    debounce(500, () => {
-      $history.active && history.add();
-      dispatch("change", $content);
-    })
-  );
+  content.subscribe(() => {
+    dispatch("input");
+    emitChange();
+  });
 </script>
 
 <style>
