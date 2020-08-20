@@ -20,7 +20,11 @@ yarn add omnia-editor
 ```javascript
 import Editor from "omnia-editor";
 const editor = new Editor({
-        target: document.getElementById("editor")
+        target: document.getElementById("editor"),
+        props: {
+          active: true,
+          spellCheck: true
+       }
     });
 ```
 
@@ -31,11 +35,43 @@ const editor = new Editor({
 - __anchor__ default: `null` A child of target to render the component immediately before.
 - __intro__ default: `false` If true, will play transitions on initial render, rather than waiting for subsequent state changes.
 - __props__ default: `{}` An object of properties to supply to the component. See below.
-- __props.content__ default: `{}` A JSON object to pass content.
-- __props.active__ default: `true` If true, content can be edited.
+
+#### `props`
+- __data__ default: `{}` A JSON object to pass content.
+- __active__ default: `true` If true, content can be edited.
+- __spellCheck__ default: `false` If true, content can be edited.
+- __placeholder__ default: `true` Placeholder for paragraphs.
+- __confirmDelete__ default: `true` Confirm dialog before deleting a block.
 
 ### `editor.getContent()`
 Gets the content from the editor as a JSON object.
+
+### `editor.update()`
+Re-initializes the instance.
+
+### `editor.setActive(boolean)`
+Enables or disables the editor.
+
+### `editor.toggleFormat(tag)`
+Formats the current selection with passed tag. Available tags:
+- __bold__
+- __underline__
+- __italic__
+
+### `editor.history.subscribe(callback)`
+Subscribes to history changes.
+```javascript
+callback = {
+  current: 0 //current history position
+  data: [...] //history snapshots
+}
+```
+
+### `editor.history.undo()`
+Undo changes if possible.
+
+### `editor.history.redo()`
+Redo changes if possible.
 
 ### `editor.$destroy()`
 Removes the instance from the DOM and triggers the `destroy` handler.
@@ -53,9 +89,8 @@ const off = app.$on('change', event => {
 off();
 ```
 - __init__: Fires after loading the editor.
-- __change__: Fires after the content was changed.
-- __destroy__: Fires after destroying the editor.
-- __save__: Fires after clicking save in toolbar.
+- __input__: Fires after keyboard input.
+- __change__: Fires after the content was successfully changed.
 
 
 ## Consuming
