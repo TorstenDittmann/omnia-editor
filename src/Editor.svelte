@@ -6,7 +6,6 @@
   import deepClone from "deep-clone";
 
   import Create from "./actions/Create.svelte";
-  import Toolbar from "./actions/Toolbar.svelte";
 
   import Heading from "./blocks/Heading.svelte";
   import Paragraph from "./blocks/Paragraph.svelte";
@@ -15,7 +14,6 @@
 
   export const history = historyStore();
   export let active = true;
-  export let toolbar = false;
   export let spellCheck = false;
   export let placeholder = "Let's write an awesome story!";
   export let confirmDelete = "Are you sure?";
@@ -101,9 +99,6 @@
 </style>
 
 <div class="omnia-editor" bind:this={editor}>
-  {#if toolbar}
-    <Toolbar on:preview={() => setActive(!$isActive)} />
-  {/if}
   {#if $content && $content.blocks}
     {#each $content.blocks as block, i}
       <svelte:component

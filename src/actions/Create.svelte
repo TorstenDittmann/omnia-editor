@@ -55,6 +55,6 @@
     <IconCode />
   </button>
   <button title="Delete" on:click={() => dispatch('remove')}>
-    <IconTrash />
+    <IconEdit />
   </button>
 </div>
