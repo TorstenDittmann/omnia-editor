@@ -1,7 +1,8 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import { hasFocus, isActive } from '../stores';
-  import { editable, contenteditable } from '../helpers';
+  import { createEventDispatcher } from "svelte";
+  import { hasFocus, isActive } from "../stores";
+  import { editable, contenteditable } from "../helpers";
+  import Edit from "../actions/Edit.svelte";
 
   export let index;
   export let data;
@@ -18,23 +19,23 @@
     }
   }
 
-  editable.on('focus', (elem) => {
+  editable.on("focus", (elem) => {
     if (elem === element) {
       focus = true;
       hasFocus.set(true);
     }
   });
 
-  editable.on('blur', (elem) => {
+  editable.on("blur", (elem) => {
     if (elem === element) {
       focus = false;
       hasFocus.set(false);
     }
   });
 
-  editable.on('change', (elem) => {
+  editable.on("change", (elem) => {
     if (elem === element) {
-      dispatch('change', { index, content: editable.getContent(elem) });
+      dispatch("change", { index, content: editable.getContent(elem) });
     }
   });
 </script>
@@ -74,3 +75,4 @@
   bind:innerHTML={data.text}
   bind:this={element}
   {placeholder} />
+  <Edit />
