@@ -1,4 +1,5 @@
 import Editable from "upfront-editable";
+import sanitizeHtml from "sanitize-html";
 import { content } from "./stores";
 import { tick } from "svelte";
 
@@ -20,7 +21,7 @@ export const setFocus = async index => {
   await tick();
   const elem = document.querySelector(`[data-index="${index}"]`);
   const cursor = editable.createCursor(elem);
-  setCursor(cursor, elem)
+  setCursor(cursor, elem);
 }
 
 export const setSpellCheck = bool => {
@@ -41,6 +42,7 @@ editable.on("split", async (elem, before, after, cursor) => {
   content.addBlock((index + 1), "paragraph", add)
   await tick();
   const newElement = document.querySelector(`[data-index="${index + 1}"]`);
+  await tick();
   cursor.moveAtBeginning(newElement);
   cursor.setVisibleSelection();
 });
@@ -54,11 +56,13 @@ editable.on("merge", async (elem, direction, cursor) => {
     const oldElement = document.querySelector(`[data-index="${index + 1}"]`);
     if (!oldElement || oldElement.dataset.type !== "paragraph") return;
     content.mergeBlock(index, index + 1);
+    await tick();
     setCursor(cursor, newElement);
   } else if (direction === "before") {
     const newElement = document.querySelector(`[data-index="${index - 1}"]`);
     if (!newElement || newElement.dataset.type !== "paragraph") return;
     content.mergeBlock(index - 1, index)
+    await tick();
     setCursor(cursor, newElement);
   }
 });
@@ -78,10 +82,28 @@ editable.on("insert", async (elem, direction, cursor) => {
   }
 });
 
-editable.on("paste", (elem, blocks, cursor) => {
+editable.on("paste", async (elem, blocks, cursor) => {
   console.log({ elem, blocks, cursor });
-  //TODO:blocks is an array of strings preprocessed by editable.js.
-  // Tidy up the blocks based on HTML tags
+  const index = +elem.dataset.index;
+  let targetIndex = cursor.isAtBeginning() ? index : cursor.isAtTextEnd() ? index + 1 : false;
+
+  const before = cursor.beforeHtml()
+  const after = cursor.afterHtml()
+
+  if (!targetIndex) {
+    targetIndex = index + 1;
+    await tick();
+    content.setBlock(index, before)
+    await tick();
+    content.addBlock(targetIndex, "paragraph", after);
+  }
+
+  blocks.forEach(async (block, i) => {
+    await tick();
+    content.addBlock(targetIndex + i, "paragraph", sanitizeHtml(block, {
+      allowedTags: ["b", "i", "em", "strong", "sub", "sup"]
+    }));
+  })
 });
 
 export const format = tag => {
