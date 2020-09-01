@@ -63,9 +63,10 @@
   data-index={index}
   data-type="code"
   class:omnia-code-blur={!focus && $hasFocus}
-  class="omnia-block omnia-code"
+  class="omnia-code"
   use:contenteditable
   contenteditable="true"
   bind:innerHTML={data.text}
   bind:this={element}
   {placeholder} />
+  <slot />

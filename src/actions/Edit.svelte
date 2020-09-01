@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { fly, slide } from 'svelte/transition';
+  import { fly, slide } from "svelte/transition";
 
   import IconCode from "../icons/IconCode.svelte";
   import IconCog from "../icons/IconCog.svelte";
@@ -13,6 +13,13 @@
 
   const dispatch = createEventDispatcher();
   let showEdit = false;
+  let containerEdit;
+
+  const blur = (e) => {
+    if (!containerEdit.matches(":focus-within")) {
+      showEdit = false;
+    }
+  };
 </script>
 
 <style>
@@ -21,6 +28,7 @@
     top: 33%;
     display: none;
   }
+
   .omnia-edit.active {
     display: block;
   }
@@ -45,6 +53,7 @@
     display: flex;
     visibility: hidden;
   }
+
   .menu.show {
     visibility: visible;
   }
@@ -53,12 +62,18 @@
     cursor: pointer;
     outline: none;
   }
+
   .edit .icon {
-    display:flex;
+    display: flex;
     transition: transform 0.1s;
   }
+
+  .edit .icon:hover {
+    transform: scale(1.2);
+  }
+
   .edit.active .icon {
-    transform: rotate(90deg);
+    transform: scale(1.2) rotate(90deg);
   }
 </style>
 
@@ -68,23 +83,34 @@
     tabindex="0"
     class:active={showEdit}
     on:focus={() => (showEdit = true)}
-    on:blur={() => (showEdit = false)}>
-      <div class="menu" class:show={showEdit}>
-        <button
-          title="Paragraph"
-          on:click={() => dispatch('create', 'paragraph')}>
-          <IconParagraph />
-        </button>
-        <button title="Quote" on:click={() => dispatch('create', 'quote')}>
-          <IconQuote />
-        </button>
-        <button title="Heading" on:click={() => dispatch('create', 'heading')}>
-          <IconHeading />
-        </button>
-        <button title="Create" on:click={() => dispatch('create', 'code')}>
-          <IconCode />
-        </button>
-      </div>
+    on:blur={blur}
+    bind:this={containerEdit}>
+    <div class="menu" class:show={showEdit}>
+      <button
+        title="Paragraph"
+        on:blur={blur}
+        on:click={() => dispatch('switch', 'paragraph')}>
+        <IconParagraph />
+      </button>
+      <button
+        title="Quote"
+        on:blur={blur}
+        on:click={() => dispatch('switch', 'quote')}>
+        <IconQuote />
+      </button>
+      <button
+        title="Heading"
+        on:blur={blur}
+        on:click={() => dispatch('switch', 'heading')}>
+        <IconHeading />
+      </button>
+      <button
+        title="Code"
+        on:blur={blur}
+        on:click={() => dispatch('switch', 'code')}>
+        <IconCode />
+      </button>
+    </div>
     <span class="icon">
       <IconCog />
     </span>

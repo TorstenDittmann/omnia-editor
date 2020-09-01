@@ -11,7 +11,7 @@
   import Paragraph from "./blocks/Paragraph.svelte";
   import Code from "./blocks/Code.svelte";
   import Quote from "./blocks/Quote.svelte";
-import Edit from "./actions/Edit.svelte";
+  import Edit from "./actions/Edit.svelte";
 
   export const history = historyStore();
   export let active = true;
@@ -94,9 +94,7 @@ import Edit from "./actions/Edit.svelte";
       line-height: 2rem;
     }
   }
-  :global(.omnia-block) {
-    margin: 0.33 0;
-  }
+
   .omnia-block {
     display: flex;
     align-items: flex-start;
@@ -107,19 +105,21 @@ import Edit from "./actions/Edit.svelte";
 <div class="omnia-editor" bind:this={editor}>
   {#if $content && $content.blocks}
     {#each $content.blocks as block, i}
-    <div class="omnia-block">
-      <svelte:component
-        this={getComponent(block.type)}
-        index={i}
-        data={deepClone(block.data)}
-        on:change={handleChange}
-        on:remove={() => content.removeBlock(i, true, confirmDelete)}
-        {placeholder} />
-    </div>
+      <div class="omnia-block">
+        <svelte:component
+          this={getComponent(block.type)}
+          index={i}
+          data={deepClone(block.data)}
+          on:change={handleChange}
+          on:remove={() => content.removeBlock(i, true, confirmDelete)}
+          {placeholder}>
+          <Edit
+            on:switch={(e) => content.switchBlock(i, e.detail)}
+            on:remove={() => content.removeBlock(i, false, confirmDelete)} />
+        </svelte:component>
+      </div>
       {#if $isActive}
-        <Create
-          on:create={(e) => content.addBlock(i + 1, e.detail, '')}
-          on:remove={() => content.removeBlock(i, false, confirmDelete)} />
+        <Create on:create={(e) => content.addBlock(i + 1, e.detail, '')} />
       {/if}
     {/each}
     {#if $content.blocks.length === 0 && $isActive}

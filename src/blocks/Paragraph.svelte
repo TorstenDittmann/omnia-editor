@@ -46,7 +46,7 @@
     width: -webkit-fill-available;
     outline: 0;
     transition: opacity 0.1s linear;
-    padding: 0 5%;
+    padding: 0 1rem;
   }
   .omnia-paragraph-blur {
     opacity: 0.4;
@@ -69,10 +69,10 @@
   data-index={index}
   data-type="paragraph"
   class:omnia-paragraph-blur={!focus && $hasFocus}
-  class="omnia-block omnia-paragraph"
+  class="omnia-paragraph"
   use:contenteditable
   contenteditable="true"
   bind:innerHTML={data.text}
   bind:this={element}
   {placeholder} />
-  <Edit />
+  <slot />
