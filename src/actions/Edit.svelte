@@ -9,8 +9,6 @@
   import IconQuote from "../icons/IconQuote.svelte";
   import IconTrash from "../icons/IconTrash.svelte";
 
-  export let active = true;
-
   const dispatch = createEventDispatcher();
   let showEdit = false;
   let containerEdit;
@@ -26,11 +24,12 @@
   .omnia-edit {
     position: sticky;
     top: 33%;
-    display: none;
+    opacity: 0.15;
+    transition: opacity 0.1s;
   }
 
-  .omnia-edit.active {
-    display: block;
+  .omnia-edit:hover {
+    opacity: 1;
   }
 
   button {
@@ -77,13 +76,13 @@
   }
 </style>
 
-<div class="omnia-edit" class:active>
+<div class="omnia-edit">
   <div
     class="edit"
     tabindex="0"
     class:active={showEdit}
-    on:focus={() => (showEdit = true)}
     on:blur={blur}
+    on:focus={() => (showEdit = true)}
     bind:this={containerEdit}>
     <div class="menu" class:show={showEdit}>
       <button

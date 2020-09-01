@@ -69,4 +69,3 @@
   bind:innerHTML={data.text}
   bind:this={element}
   {placeholder} />
-  <slot />

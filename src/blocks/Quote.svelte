@@ -68,4 +68,3 @@
   bind:this={element}
   bind:innerHTML={data.text}
   {placeholder} />
-  <slot />

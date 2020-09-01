@@ -7,11 +7,7 @@
 
   import Create from "./actions/Create.svelte";
 
-  import Heading from "./blocks/Heading.svelte";
-  import Paragraph from "./blocks/Paragraph.svelte";
-  import Code from "./blocks/Code.svelte";
-  import Quote from "./blocks/Quote.svelte";
-  import Edit from "./actions/Edit.svelte";
+  import Block from "./Block.svelte";
 
   export const history = historyStore();
   export let active = true;
@@ -39,12 +35,6 @@
   let editor;
 
   const dispatch = createEventDispatcher();
-  const blocks = {
-    paragraph: Paragraph,
-    heading: Heading,
-    code: Code,
-    quote: Quote,
-  };
 
   const onInit = () => {
     $isActive = active;
@@ -57,19 +47,14 @@
     dispatch("init");
   };
 
-  const handleChange = (e) => {
+  const activateHistory = () => {
     $history.active = true;
-    $content.blocks[e.detail.index].data.text = e.detail.content;
   };
 
   const emitChange = debounce(500, () => {
     $history.active && history.add();
     dispatch("change", $content);
   });
-
-  const getComponent = (type) => {
-    return blocks[type];
-  };
 
   setSpellCheck(spellCheck);
   onMount(onInit);
@@ -94,33 +79,17 @@
       line-height: 2rem;
     }
   }
-
-  .omnia-block {
-    display: flex;
-    align-items: flex-start;
-    column-gap: 1rem;
-  }
 </style>
 
 <div class="omnia-editor" bind:this={editor}>
   {#if $content && $content.blocks}
     {#each $content.blocks as block, i}
-      <div class="omnia-block">
-        <svelte:component
-          this={getComponent(block.type)}
-          index={i}
-          data={deepClone(block.data)}
-          on:change={handleChange}
-          on:remove={() => content.removeBlock(i, true, confirmDelete)}
-          {placeholder}>
-          <Edit
-            on:switch={(e) => content.switchBlock(i, e.detail)}
-            on:remove={() => content.removeBlock(i, false, confirmDelete)} />
-        </svelte:component>
-      </div>
-      {#if $isActive}
-        <Create on:create={(e) => content.addBlock(i + 1, e.detail, '')} />
-      {/if}
+      <Block
+        {block}
+        {i}
+        {confirmDelete}
+        {placeholder}
+        on:activateHistory={activateHistory} />
     {/each}
     {#if $content.blocks.length === 0 && $isActive}
       <Create
