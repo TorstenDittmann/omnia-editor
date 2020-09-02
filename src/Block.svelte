@@ -51,11 +51,9 @@
     on:change={handleChange}
     on:remove={() => content.removeBlock(i, true, confirmDelete)}
     {placeholder} />
-  {#if $isActive}
-    <Edit
-      on:switch={(e) => content.switchBlock(i, e.detail)}
-      on:remove={() => content.removeBlock(i, false, confirmDelete)} />
-  {/if}
+  <Edit
+    on:switch={(e) => content.switchBlock(i, e.detail)}
+    on:remove={() => content.removeBlock(i, false, confirmDelete)} />
 </div>
 {#if $isActive}
   <Create on:create={(e) => content.addBlock(i + 1, e.detail, '')} />

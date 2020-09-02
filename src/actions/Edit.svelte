@@ -23,8 +23,8 @@
 <style>
   .omnia-edit {
     position: sticky;
-    top: 33%;
-    opacity: 0.15;
+    top: 50%;
+    opacity: 0.1;
     transition: opacity 0.1s;
   }
 

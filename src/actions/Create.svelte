@@ -36,7 +36,7 @@
   }
   @media (max-width: 960px) {
     .omnia-create {
-      opacity: 1;
+      opacity: .1;
     }
   }
 </style>
