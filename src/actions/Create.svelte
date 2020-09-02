@@ -1,7 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
-  import IconTrash from "../icons/IconTrash.svelte";
   import IconCode from "../icons/IconCode.svelte";
   import IconParagraph from "../icons/IconParagraph.svelte";
   import IconQuote from "../icons/IconQuote.svelte";

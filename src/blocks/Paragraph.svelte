@@ -2,7 +2,6 @@
   import { createEventDispatcher } from "svelte";
   import { hasFocus, isActive } from "../stores";
   import { editable, contenteditable } from "../helpers";
-  import Edit from "../actions/Edit.svelte";
 
   export let index;
   export let data;

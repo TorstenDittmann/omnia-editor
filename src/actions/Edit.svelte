@@ -1,6 +1,5 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { fly, slide } from "svelte/transition";
 
   import IconCode from "../icons/IconCode.svelte";
   import IconCog from "../icons/IconCog.svelte";
@@ -13,7 +12,7 @@
   let showEdit = false;
   let containerEdit;
 
-  const blur = (e) => {
+  const blur = () => {
     if (!containerEdit.matches(":focus-within")) {
       showEdit = false;
     }

@@ -31,8 +31,6 @@
     dispatch("activateHistory");
     $content.blocks[e.detail.index].data.text = e.detail.content;
   };
-
-  const setFocus = (bool) => (blockFocus = bool);
 </script>
 
 <style>
