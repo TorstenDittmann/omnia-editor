@@ -1,7 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
-  import IconTrash from "../icons/IconTrash.svelte";
   import IconCode from "../icons/IconCode.svelte";
   import IconParagraph from "../icons/IconParagraph.svelte";
   import IconQuote from "../icons/IconQuote.svelte";
@@ -36,7 +35,7 @@
   }
   @media (max-width: 960px) {
     .omnia-create {
-      opacity: 1;
+      opacity: .1;
     }
   }
 </style>
@@ -53,8 +52,5 @@
   </button>
   <button title="Create" on:click={() => dispatch('create', 'code')}>
     <IconCode />
-  </button>
-  <button title="Delete" on:click={() => dispatch('remove')}>
-    <IconTrash />
   </button>
 </div>

@@ -7,14 +7,13 @@
 
   import Create from "./actions/Create.svelte";
 
-  import Heading from "./blocks/Heading.svelte";
-  import Paragraph from "./blocks/Paragraph.svelte";
-  import Code from "./blocks/Code.svelte";
-  import Quote from "./blocks/Quote.svelte";
+  import Block from "./Block.svelte";
+  import Sidebar from "./Sidebar.svelte";
 
   export const history = historyStore();
   export let active = true;
   export let spellCheck = false;
+  export let sidebar = true;
   export let placeholder = "Let's write an awesome story!";
   export let confirmDelete = "Are you sure?";
   export let data;
@@ -38,12 +37,6 @@
   let editor;
 
   const dispatch = createEventDispatcher();
-  const blocks = {
-    paragraph: Paragraph,
-    heading: Heading,
-    code: Code,
-    quote: Quote,
-  };
 
   const onInit = () => {
     $isActive = active;
@@ -56,19 +49,14 @@
     dispatch("init");
   };
 
-  const handleChange = (e) => {
+  const activateHistory = () => {
     $history.active = true;
-    $content.blocks[e.detail.index].data.text = e.detail.content;
   };
 
   const emitChange = debounce(500, () => {
     $history.active && history.add();
     dispatch("change", $content);
   });
-
-  const getComponent = (type) => {
-    return blocks[type];
-  };
 
   setSpellCheck(spellCheck);
   onMount(onInit);
@@ -87,37 +75,40 @@
     line-height: 2.5rem;
     text-align: justify;
     background-color: inherit;
+    display: flex;
+    flex-direction: row;
   }
   @media (max-width: 960px) {
     .omnia-editor {
       line-height: 2rem;
     }
   }
-  :global(.omnia-block) {
-    margin: 0.33 0;
+  .omnia-blocks {
+    width: 100%;
   }
 </style>
 
 <div class="omnia-editor" bind:this={editor}>
-  {#if $content && $content.blocks}
-    {#each $content.blocks as block, i}
-      <svelte:component
-        this={getComponent(block.type)}
-        index={i}
-        data={deepClone(block.data)}
-        on:change={handleChange}
-        on:remove={() => content.removeBlock(i, true, confirmDelete)}
-        {placeholder} />
-      {#if $isActive}
-        <Create
-          on:create={(e) => content.addBlock(i + 1, e.detail, '')}
-          on:remove={() => content.removeBlock(i, false, confirmDelete)} />
-      {/if}
-    {/each}
-    {#if $content.blocks.length === 0 && $isActive}
-      <Create
-        on:create={(e) => content.addBlock(0, e.detail, '')}
-        on:remove={() => content.removeBlock(0, false, confirmDelete)} />
-    {/if}
+  {#if sidebar}
+    <Sidebar>
+      <slot />
+    </Sidebar>
   {/if}
+  <div class="omnia-blocks">
+    {#if $content && $content.blocks}
+      {#each $content.blocks as block, i}
+        <Block
+          {block}
+          {i}
+          {confirmDelete}
+          {placeholder}
+          on:activateHistory={activateHistory} />
+      {/each}
+      {#if $content.blocks.length === 0 && $isActive}
+        <Create
+          on:create={(e) => content.addBlock(0, e.detail, '')}
+          on:remove={() => content.removeBlock(0, false, confirmDelete)} />
+      {/if}
+    {/if}
+  </div>
 </div>

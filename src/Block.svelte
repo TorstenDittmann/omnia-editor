@@ -1,0 +1,58 @@
+<script>
+  import deepClone from "deep-clone";
+  import { createEventDispatcher } from "svelte";
+  import { content, isActive } from "./stores";
+
+  import Heading from "./blocks/Heading.svelte";
+  import Paragraph from "./blocks/Paragraph.svelte";
+  import Code from "./blocks/Code.svelte";
+  import Quote from "./blocks/Quote.svelte";
+  import Edit from "./actions/Edit.svelte";
+  import Create from "./actions/Create.svelte";
+
+  export let block;
+  export let i;
+  export let placeholder;
+  export let confirmDelete;
+
+  const dispatch = createEventDispatcher();
+  const blocks = {
+    paragraph: Paragraph,
+    heading: Heading,
+    code: Code,
+    quote: Quote,
+  };
+
+  const getComponent = (type) => {
+    return blocks[type];
+  };
+
+  const handleChange = (e) => {
+    dispatch("activateHistory");
+    $content.blocks[e.detail.index].data.text = e.detail.content;
+  };
+</script>
+
+<style>
+  .omnia-block {
+    display: flex;
+    align-items: flex-start;
+    column-gap: 1rem;
+  }
+</style>
+
+<div class="omnia-block">
+  <svelte:component
+    this={getComponent(block.type)}
+    index={i}
+    data={deepClone(block.data)}
+    on:change={handleChange}
+    on:remove={() => content.removeBlock(i, true, confirmDelete)}
+    {placeholder} />
+  <Edit
+    on:switch={(e) => content.switchBlock(i, e.detail)}
+    on:remove={() => content.removeBlock(i, false, confirmDelete)} />
+</div>
+{#if $isActive}
+  <Create on:create={(e) => content.addBlock(i + 1, e.detail, '')} />
+{/if}

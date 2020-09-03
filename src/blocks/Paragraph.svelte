@@ -1,7 +1,7 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import { hasFocus, isActive } from '../stores';
-  import { editable, contenteditable } from '../helpers';
+  import { createEventDispatcher } from "svelte";
+  import { hasFocus, isActive } from "../stores";
+  import { editable, contenteditable } from "../helpers";
 
   export let index;
   export let data;
@@ -18,23 +18,23 @@
     }
   }
 
-  editable.on('focus', (elem) => {
+  editable.on("focus", (elem) => {
     if (elem === element) {
       focus = true;
       hasFocus.set(true);
     }
   });
 
-  editable.on('blur', (elem) => {
+  editable.on("blur", (elem) => {
     if (elem === element) {
       focus = false;
       hasFocus.set(false);
     }
   });
 
-  editable.on('change', (elem) => {
+  editable.on("change", (elem) => {
     if (elem === element) {
-      dispatch('change', { index, content: editable.getContent(elem) });
+      dispatch("change", { index, content: editable.getContent(elem) });
     }
   });
 </script>
@@ -45,7 +45,7 @@
     width: -webkit-fill-available;
     outline: 0;
     transition: opacity 0.1s linear;
-    padding: 0 5%;
+    padding: 0 1rem;
   }
   .omnia-paragraph-blur {
     opacity: 0.4;
@@ -68,7 +68,7 @@
   data-index={index}
   data-type="paragraph"
   class:omnia-paragraph-blur={!focus && $hasFocus}
-  class="omnia-block omnia-paragraph"
+  class="omnia-paragraph"
   use:contenteditable
   contenteditable="true"
   bind:innerHTML={data.text}

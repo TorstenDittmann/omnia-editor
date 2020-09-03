@@ -50,6 +50,13 @@ const contentStore = () => {
       n.blocks[index].data.text += n.blocks[old].data.text;
       n.blocks.splice(old, 1);
       set(n);
+    },
+    switchBlock: (index, type) => {
+      console.log({index, type})
+      update(n => {
+        n.blocks[+index].type = type;
+        return n;
+      })
     }
   }
 }

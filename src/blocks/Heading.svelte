@@ -62,7 +62,7 @@
   data-index={index}
   data-type="heading"
   class:omnia-heading-blur={!focus && $hasFocus}
-  class="omnia-block omnia-heading"
+  class="omnia-heading"
   use:contenteditable
   contenteditable="true"
   bind:this={element}

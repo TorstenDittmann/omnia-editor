@@ -118,7 +118,6 @@ export const format = tag => {
     case "underline":
       selection.toggleUnderline();
       break;
-
     default:
       break;
   }
