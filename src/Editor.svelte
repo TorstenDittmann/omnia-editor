@@ -83,6 +83,9 @@
       line-height: 2rem;
     }
   }
+  .omnia-blocks {
+    width: 100%;
+  }
 </style>
 
 <div class="omnia-editor" bind:this={editor}>

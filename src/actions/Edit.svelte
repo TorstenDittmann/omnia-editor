@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
 
   import IconCode from "../icons/IconCode.svelte";
-  import IconCog from "../icons/IconCog.svelte";
+  import IconChange from "../icons/IconChange.svelte";
   import IconHeading from "../icons/IconHeading.svelte";
   import IconParagraph from "../icons/IconParagraph.svelte";
   import IconQuote from "../icons/IconQuote.svelte";
@@ -25,6 +25,9 @@
     top: 50%;
     opacity: 0.1;
     transition: opacity 0.1s;
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
   }
 
   .omnia-edit:hover {
@@ -47,7 +50,7 @@
     position: absolute;
     left: -8rem;
     width: 8rem;
-    background: white;
+    background: var(--background-color);
     display: flex;
     visibility: hidden;
   }
@@ -110,7 +113,7 @@
       </button>
     </div>
     <span class="icon">
-      <IconCog />
+      <IconChange />
     </span>
   </div>
   <button title="Delete" on:click={() => dispatch('remove')}>
