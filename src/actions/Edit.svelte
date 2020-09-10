@@ -48,11 +48,16 @@
 
   .menu {
     position: absolute;
-    left: -8rem;
-    width: 8rem;
+    left: -12rem;
+    width: 12rem;
+    top: -.5rem;
     background: var(--background-color);
     display: flex;
     visibility: hidden;
+  }
+
+  .menu button {
+    margin: .5rem;
   }
 
   .menu.show {
