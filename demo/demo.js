@@ -6,7 +6,6 @@ const editor = new Editor({
     props: {
         data: Data,
         active: true,
-        toolbar: true,
         spellCheck: true
     }
 })

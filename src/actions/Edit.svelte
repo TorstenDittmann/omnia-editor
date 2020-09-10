@@ -7,6 +7,7 @@
   import IconParagraph from "../icons/IconParagraph.svelte";
   import IconQuote from "../icons/IconQuote.svelte";
   import IconTrash from "../icons/IconTrash.svelte";
+import { i18n } from "../stores";
 
   const dispatch = createEventDispatcher();
   let showEdit = false;
@@ -87,31 +88,32 @@
   <div
     class="edit"
     tabindex="0"
+    title={$i18n.switch}
     class:active={showEdit}
     on:blur={blur}
     on:focus={() => (showEdit = true)}
     bind:this={containerEdit}>
     <div class="menu" class:show={showEdit}>
       <button
-        title="Paragraph"
+        title={$i18n.blocks.paragraph}
         on:blur={blur}
         on:click={() => dispatch('switch', 'paragraph')}>
         <IconParagraph />
       </button>
       <button
-        title="Quote"
+        title={$i18n.blocks.quote}
         on:blur={blur}
         on:click={() => dispatch('switch', 'quote')}>
         <IconQuote />
       </button>
       <button
-        title="Heading"
+        title={$i18n.blocks.heading}
         on:blur={blur}
         on:click={() => dispatch('switch', 'heading')}>
         <IconHeading />
       </button>
       <button
-        title="Code"
+        title={$i18n.blocks.code}
         on:blur={blur}
         on:click={() => dispatch('switch', 'code')}>
         <IconCode />
@@ -121,7 +123,7 @@
       <IconChange />
     </span>
   </div>
-  <button title="Delete" on:click={() => dispatch('remove')}>
+  <button title={$i18n.delete} on:click={() => dispatch('remove')}>
     <IconTrash />
   </button>
 </div>

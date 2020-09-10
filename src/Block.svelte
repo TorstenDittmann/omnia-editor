@@ -41,6 +41,9 @@
   }
 </style>
 
+{#if $isActive}
+  <Create on:create={(e) => content.addBlock(i, e.detail, '')} />
+{/if}
 <div class="omnia-block">
   <svelte:component
     this={getComponent(block.type)}
@@ -49,10 +52,9 @@
     on:change={handleChange}
     on:remove={() => content.removeBlock(i, true, confirmDelete)}
     {placeholder} />
-  <Edit
-    on:switch={(e) => content.switchBlock(i, e.detail)}
-    on:remove={() => content.removeBlock(i, false, confirmDelete)} />
+  {#if $isActive}
+    <Edit
+      on:switch={(e) => content.switchBlock(i, e.detail)}
+      on:remove={() => content.removeBlock(i, false, confirmDelete)} />
+  {/if}
 </div>
-{#if $isActive}
-  <Create on:create={(e) => content.addBlock(i + 1, e.detail, '')} />
-{/if}

@@ -12,7 +12,18 @@ export const defaultData = {
     },
   ],
 };
-
+export const i18n = writable({
+  placeholder: "Let's write an awesome story!",
+  switch: "Change Block",
+  delete: "Delete",
+  confirmDelete: "Are you sure?",
+  blocks: {
+    paragraph: "Paragraph",
+    heading: "Heading",
+    quote: "Quote",
+    code: "Monospace",
+  },
+});
 export const hasFocus = writable(false);
 export const isActive = writable(true);
 export const spellCheck = writable(false);

@@ -5,6 +5,7 @@
   import IconParagraph from "../icons/IconParagraph.svelte";
   import IconQuote from "../icons/IconQuote.svelte";
   import IconHeading from "../icons/IconHeading.svelte";
+  import { i18n } from "../stores";
 
   const dispatch = createEventDispatcher();
 </script>
@@ -35,22 +36,22 @@
   }
   @media (max-width: 960px) {
     .omnia-create {
-      opacity: .1;
+      opacity: 0.1;
     }
   }
 </style>
 
 <div class="omnia-create">
-  <button title="Paragraph" on:click={() => dispatch('create', 'paragraph')}>
-    <IconParagraph />
-  </button>
-  <button title="Quote" on:click={() => dispatch('create', 'quote')}>
-    <IconQuote />
-  </button>
-  <button title="Heading" on:click={() => dispatch('create', 'heading')}>
-    <IconHeading />
-  </button>
-  <button title="Create" on:click={() => dispatch('create', 'code')}>
-    <IconCode />
-  </button>
+    <button title={$i18n.blocks.paragraph} on:click={() => dispatch('create', 'paragraph')}>
+      <IconParagraph />
+    </button>
+    <button title={$i18n.blocks.quote} on:click={() => dispatch('create', 'quote')}>
+      <IconQuote />
+    </button>
+    <button title={$i18n.blocks.heading} on:click={() => dispatch('create', 'heading')}>
+      <IconHeading />
+    </button>
+    <button title={$i18n.blocks.code} on:click={() => dispatch('create', 'code')}>
+      <IconCode />
+    </button>
 </div>

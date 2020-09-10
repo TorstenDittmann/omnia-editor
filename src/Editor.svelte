@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
   import { debounce } from "throttle-debounce";
-  import { isActive, content, historyStore, defaultData } from "./stores";
+  import { isActive, content, historyStore, defaultData, i18n } from "./stores";
   import { format, setSpellCheck } from "./helpers";
   import deepClone from "deep-clone";
 
@@ -17,6 +17,8 @@
   export let placeholder = "Let's write an awesome story!";
   export let confirmDelete = "Are you sure?";
   export let data;
+
+  export let translation = {};
 
   export const toggleFormat = (tag) => {
     format(tag);
@@ -45,6 +47,10 @@
     } else {
       $content = deepClone(defaultData);
     }
+    $i18n = {
+      ...$i18n,
+      ...translation,
+    };
     history.reset();
     dispatch("init");
   };
@@ -104,7 +110,7 @@
           {placeholder}
           on:activateHistory={activateHistory} />
       {/each}
-      {#if $content.blocks.length === 0 && $isActive}
+      {#if $isActive}
         <Create
           on:create={(e) => content.addBlock(0, e.detail, '')}
           on:remove={() => content.removeBlock(0, false, confirmDelete)} />
