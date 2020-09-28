@@ -17,8 +17,6 @@
   export let data;
 
   export let translation = {};
-  export let placeholder = translation.placeholder;
-  export let confirmDelete = translation.confirmDelete;
 
   export const toggleFormat = (tag) => {
     format(tag);
@@ -106,14 +104,14 @@
         <Block
           {block}
           {i}
-          {confirmDelete}
-          {placeholder}
+          confirmDelete={translation.confirmDelete}
+          placeholder={translation.placeholder}
           on:activateHistory={activateHistory} />
       {/each}
       {#if $isActive}
         <Create
           on:create={(e) => content.addBlock(0, e.detail, '')}
-          on:remove={() => content.removeBlock(0, false, confirmDelete)} />
+          on:remove={() => content.removeBlock(0, false, translation.confirmDelete)} />
       {/if}
     {/if}
   </div>
