@@ -14,11 +14,11 @@
   export let active = true;
   export let spellCheck = false;
   export let sidebar = true;
-  export let placeholder = "Let's write an awesome story!";
-  export let confirmDelete = "Are you sure?";
   export let data;
 
   export let translation = {};
+  export let placeholder = translation.placeholder;
+  export let confirmDelete = translation.confirmDelete;
 
   export const toggleFormat = (tag) => {
     format(tag);
