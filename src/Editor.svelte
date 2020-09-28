@@ -14,8 +14,6 @@
   export let active = true;
   export let spellCheck = false;
   export let sidebar = true;
-  export let placeholder = "Let's write an awesome story!";
-  export let confirmDelete = "Are you sure?";
   export let data;
 
   export let translation = {};
@@ -106,14 +104,14 @@
         <Block
           {block}
           {i}
-          {confirmDelete}
-          {placeholder}
+          confirmDelete={translation.confirmDelete}
+          placeholder={translation.placeholder}
           on:activateHistory={activateHistory} />
       {/each}
       {#if $isActive}
         <Create
           on:create={(e) => content.addBlock(0, e.detail, '')}
-          on:remove={() => content.removeBlock(0, false, confirmDelete)} />
+          on:remove={() => content.removeBlock(0, false, translation.confirmDelete)} />
       {/if}
     {/if}
   </div>
