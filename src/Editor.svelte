@@ -104,14 +104,12 @@
         <Block
           {block}
           {i}
-          confirmDelete={translation.confirmDelete}
-          placeholder={translation.placeholder}
           on:activateHistory={activateHistory} />
       {/each}
       {#if $isActive}
         <Create
           on:create={(e) => content.addBlock(0, e.detail, '')}
-          on:remove={() => content.removeBlock(0, false, translation.confirmDelete)} />
+          on:remove={() => content.removeBlock(0, false, $i18n.confirmDelete)} />
       {/if}
     {/if}
   </div>

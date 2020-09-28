@@ -1,7 +1,7 @@
 <script>
   import deepClone from "deep-clone";
   import { createEventDispatcher } from "svelte";
-  import { content, isActive } from "./stores";
+  import { content, i18n, isActive } from "./stores";
 
   import Heading from "./blocks/Heading.svelte";
   import Paragraph from "./blocks/Paragraph.svelte";
@@ -12,8 +12,6 @@
 
   export let block;
   export let i;
-  export let placeholder;
-  export let confirmDelete;
 
   const dispatch = createEventDispatcher();
   const blocks = {
@@ -50,11 +48,11 @@
     index={i}
     data={deepClone(block.data)}
     on:change={handleChange}
-    on:remove={() => content.removeBlock(i, true, confirmDelete)}
-    {placeholder} />
+    on:remove={() => content.removeBlock(i, true, $i18n.confirmDelete)}
+    placeholder={$i18n.placeholder} />
   {#if $isActive}
     <Edit
       on:switch={(e) => content.switchBlock(i, e.detail)}
-      on:remove={() => content.removeBlock(i, false, confirmDelete)} />
+      on:remove={() => content.removeBlock(i, false, $i18n.confirmDelete)} />
   {/if}
 </div>

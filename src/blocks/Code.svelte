@@ -1,11 +1,10 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { hasFocus, isActive } from "../stores";
+  import { hasFocus, i18n, isActive } from "../stores";
   import { editable, contenteditable } from '../helpers';
 
   export let index;
   export let data;
-  export let placeholder;
   export let focus = false;
 
   const dispatch = createEventDispatcher();
@@ -68,4 +67,4 @@
   contenteditable="true"
   bind:innerHTML={data.text}
   bind:this={element}
-  {placeholder} />
+  placeholder={$i18n.placeholder} />
