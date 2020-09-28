@@ -1,6 +1,6 @@
 # omnia-editor
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ```bash
@@ -110,6 +110,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/AntonyBoucher"><img src="https://avatars3.githubusercontent.com/u/69065091?v=4" width="100px;" alt=""/><br /><sub><b>AntonyBoucher</b></sub></a><br /><a href="https://github.com/TorstenDittmann/omnia-editor/commits?author=AntonyBoucher" title="Code">💻</a></td>
     <td align="center"><a href="https://torstendittmann.now.sh"><img src="https://avatars1.githubusercontent.com/u/1759475?v=4" width="100px;" alt=""/><br /><sub><b>Torsten Dittmann</b></sub></a><br /><a href="https://github.com/TorstenDittmann/omnia-editor/commits?author=TorstenDittmann" title="Tests">⚠️</a> <a href="https://github.com/TorstenDittmann/omnia-editor/commits?author=TorstenDittmann" title="Code">💻</a></td>
+    <td align="center"><a href="https://twitter.com/dennistobar"><img src="https://avatars1.githubusercontent.com/u/1218182?v=4" width="100px;" alt=""/><br /><sub><b>Dennis Tobar</b></sub></a><br /><a href="https://github.com/TorstenDittmann/omnia-editor/commits?author=dennistobar" title="Code">💻</a></td>
   </tr>
 </table>
 
