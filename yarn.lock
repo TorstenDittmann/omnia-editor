@@ -1457,10 +1457,10 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-upfront-editable@^2.1.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/upfront-editable/-/upfront-editable-2.2.1.tgz#4675cd827761de89692f113fef787d3d0bf67d82"
-  integrity sha512-KHfrNELJyGx8SMIlFglYYjUvZisZxhFV3ToaRRoLO2VN9LH3lIe+QuJXOB+Cwj7hqVigASzZjN5SnOoaHBF9lg==
+upfront-editable@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/upfront-editable/-/upfront-editable-2.2.2.tgz#48f7888a3ceea2058b2d6fd8103b0eca9e1f3b7f"
+  integrity sha512-L93TAIYNZZjFh/Jg0GjNbdvfplFO5KzyXupbg+YwpXMHKjzA7DtrjYI3HQ2Sb/8Ft7HC6GgrvbmjN4LtwzZx9A==
   dependencies:
     babel-runtime "^6.6.1"
     bowser "2.7.0"

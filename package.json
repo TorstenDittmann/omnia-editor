@@ -28,7 +28,7 @@
     "jquery": "^3.5.1",
     "sanitize-html": "^1.27.0",
     "throttle-debounce": "^2.2.1",
-    "upfront-editable": "^2.1.1"
+    "upfront-editable": "^2.2.2"
   },
   "keywords": [
     "svelte",
