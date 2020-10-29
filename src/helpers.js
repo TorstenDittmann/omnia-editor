@@ -32,6 +32,24 @@ editable.selection((el, sel) => {
   selection = sel;
 });
 
+editable.on('switch', async (elem, direction, cursor) => {
+  const index = +elem.dataset.index;
+
+  if (direction === 'down') {
+    const newElement = document.querySelector(`[data-index="${index + 1}"]`);
+    if(newElement) {
+      cursor.moveAtBeginning(newElement);
+      cursor.setVisibleSelection();
+    }
+  } else if (direction === 'up') {
+    const newElement = document.querySelector(`[data-index="${index - 1}"]`);
+    if(newElement) {
+      cursor.moveAtTextEnd(newElement);
+      cursor.setVisibleSelection();
+    }  
+  }
+})
+
 editable.on("split", async (elem, before, after, cursor) => {
   if (elem && elem.dataset.type !== "paragraph") return false;
   const reducer = (pre, cur) => `${pre}${cur.outerHTML ? cur.outerHTML : cur.nodeValue}`;
