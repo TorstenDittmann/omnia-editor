@@ -6,7 +6,7 @@
 	import FloatingMenu from '@tiptap/extension-floating-menu';
 	import Focus from '@tiptap/extension-focus';
 
-	export let editor: Editor;
+	export let editor: Editor = undefined;
 	export let spellcheck: boolean = false;
 
 	const dispatch = createEventDispatcher();
@@ -53,7 +53,13 @@
 </script>
 
 <button on:click={() => console.log(editor.getJSON())}>Get JSON</button>
-<div class="omnia-editor" bind:this={element} spellcheck={spellcheck} autocapitalize="off" autocorrect={spellcheck ? 'on' : 'off'}>
+<div
+	class="omnia-editor"
+	bind:this={element}
+	{spellcheck}
+	autocapitalize="off"
+	autocorrect={spellcheck ? 'on' : 'off'}
+>
 	<div class="ProseMirror" />
 </div>
 <div bind:this={floating}>
@@ -122,7 +128,7 @@
 		background-color: inherit;
 		outline: 0;
 
-		* {
+		> * {
 			font-family: inherit;
 		}
 
@@ -135,14 +141,15 @@
 			text-align: center;
 		}
 
-		> p, blockquote {
+		> p,
+		blockquote {
 			line-height: 2.5rem;
 			padding: 0 1rem;
 		}
 
 		> blockquote {
 			text-align: center;
-    		font-style: italic;
+			font-style: italic;
 		}
 
 		&.ProseMirror-focused {
