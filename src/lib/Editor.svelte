@@ -6,6 +6,9 @@
 	import FloatingMenu from '@tiptap/extension-floating-menu';
 	import Focus from '@tiptap/extension-focus';
 
+	import Float from './Float.svelte';
+	import Tooltip from './Tooltip.svelte';
+
 	export let editor: Editor = undefined;
 	export let spellcheck: boolean = false;
 
@@ -29,6 +32,7 @@
 			],
 			content: `
 				<h1>omnia-editor</h1>
+				<pre><code>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Blandit libero volutpat sed cras. Purus semper eget duis at. Mi eget mauris pharetra et ultrices neque. Aliquet bibendum enim facilisis gravida neque convallis. Tellus id interdum velit laoreet id. Adipiscing commodo elit at imperdiet dui accumsan sit amet nulla. Magna eget est lorem ipsum dolor. Quam quisque id diam vel quam elementum pulvinar. Amet venenatis urna cursus eget nunc scelerisque viverra. Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Dui ut ornare lectus sit. Nulla facilisi cras fermentum odio eu feugiat. A erat nam at lectus urna. Nam aliquam sem et tortor consequat. Mi proin sed libero enim sed faucibus turpis in. Ut venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Ultricies mi eget mauris pharetra et ultrices. Semper viverra nam libero justo. Tempus quam pellentesque nec nam.</code></pre>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Blandit libero volutpat sed cras. Purus semper eget duis at. Mi eget mauris pharetra et ultrices neque. Aliquet bibendum enim facilisis gravida neque convallis. Tellus id interdum velit laoreet id. Adipiscing commodo elit at imperdiet dui accumsan sit amet nulla. Magna eget est lorem ipsum dolor. Quam quisque id diam vel quam elementum pulvinar. Amet venenatis urna cursus eget nunc scelerisque viverra. Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Dui ut ornare lectus sit. Nulla facilisi cras fermentum odio eu feugiat. A erat nam at lectus urna. Nam aliquam sem et tortor consequat. Mi proin sed libero enim sed faucibus turpis in. Ut venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Ultricies mi eget mauris pharetra et ultrices. Semper viverra nam libero justo. Tempus quam pellentesque nec nam.</p>
 				<h1>Lorem Ipsum</h1>
 				<p>Id donec ultrices tincidunt arcu non sodales. Eget mauris pharetra et ultrices neque ornare aenean. Risus commodo viverra maecenas accumsan lacus. Vitae tempus quam pellentesque nec nam aliquam sem et. Mauris nunc congue nisi vitae suscipit tellus. Commodo ullamcorper a lacus vestibulum. Auctor augue mauris augue neque gravida in fermentum. Dictumst quisque sagittis purus sit amet. Convallis convallis tellus id interdum velit laoreet id. Scelerisque eu ultrices vitae auctor eu augue. Eu non diam phasellus vestibulum lorem sed risus ultricies tristique. Nec ullamcorper sit amet risus nullam. Euismod lacinia at quis risus.</p>
@@ -53,6 +57,7 @@
 </script>
 
 <button on:click={() => console.log(editor.getJSON())}>Get JSON</button>
+<button on:click={() => console.log(editor.getHTML())}>Get HTML</button>
 <div
 	class="omnia-editor"
 	bind:this={element}
@@ -63,60 +68,10 @@
 	<div class="ProseMirror" />
 </div>
 <div bind:this={floating}>
-	{#if editor}
-		<button
-			on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-			class:active={editor.isActive('heading', { level: 1 })}
-		>
-			H1
-		</button>
-		<button
-			on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-			class:active={editor.isActive('heading', { level: 2 })}
-		>
-			H2
-		</button>
-		<button
-			on:click={() => editor.chain().focus().setBlockquote().run()}
-			class:active={editor.isActive('blockquote')}
-		>
-			Q
-		</button>
-		<button
-			on:click={() => editor.chain().focus().setParagraph().run()}
-			class:active={editor.isActive('paragraph')}
-		>
-			P
-		</button>
-	{/if}
+	<Float {editor} />
 </div>
 <div bind:this={tooltip}>
-	{#if editor}
-		<button
-			on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-			class:active={editor.isActive('heading', { level: 1 })}
-		>
-			H1
-		</button>
-		<button
-			on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-			class:active={editor.isActive('heading', { level: 2 })}
-		>
-			H2
-		</button>
-		<button
-			on:click={() => editor.chain().focus().setBlockquote().run()}
-			class:active={editor.isActive('blockquote')}
-		>
-			Q
-		</button>
-		<button
-			on:click={() => editor.chain().focus().setParagraph().run()}
-			class:active={editor.isActive('paragraph')}
-		>
-			P
-		</button>
-	{/if}
+	<Tooltip {editor} />
 </div>
 
 <style lang="scss" global>
