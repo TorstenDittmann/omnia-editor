@@ -1,5 +1,5 @@
 <script>
-	import Editor from '$lib/Editor.svelte';
+	import { OmniaEditor } from '$lib';
 </script>
 
-<Editor />
+<OmniaEditor />
