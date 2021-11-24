@@ -11,6 +11,32 @@
 <div class="omnia-tooltip">
 	{#if editor}
 		<button
+			on:click={() => editor.chain().focus().toggleBold().run()}
+			class:active={editor.isActive('bold')}
+		>
+			Bold
+		</button>
+		<button
+			on:click={() => editor.chain().focus().toggleItalic().run()}
+			class:active={editor.isActive('italic')}
+		>
+			Italic
+		</button>
+		<button
+			on:click={() => editor.chain().focus().toggleStrike().run()}
+			class:active={editor.isActive('strike')}
+		>
+			Strike
+		</button>
+		<button
+			on:click={() => editor.chain().focus().setTextAlign('center').run()}
+			class:active={editor.isActive('strike')}
+		>
+			Center
+		</button>
+
+		<span>|</span>
+		<button
 			on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
 			class:active={editor.isActive('heading', { level: 1 })}
 		>
@@ -34,30 +60,11 @@
 		>
 			<IconParagraph />
 		</button>
-		<span>|</span>
 		<button
 			on:click={() => editor.chain().focus().toggleBlockquote().run()}
 			class:active={editor.isActive('blockquote')}
 		>
 			<IconQuote />
-		</button>
-		<button
-			on:click={() => editor.chain().focus().toggleBold().run()}
-			class:active={editor.isActive('bold')}
-		>
-			Bold
-		</button>
-		<button
-			on:click={() => editor.chain().focus().toggleItalic().run()}
-			class:active={editor.isActive('italic')}
-		>
-			Italic
-		</button>
-		<button
-			on:click={() => editor.chain().focus().toggleStrike().run()}
-			class:active={editor.isActive('strike')}
-		>
-			Strike
 		</button>
 	{/if}
 </div>

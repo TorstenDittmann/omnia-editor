@@ -37,6 +37,7 @@
 		"@tiptap/extension-focus": "*",
 		"@tiptap/extension-history": "*",
 		"@tiptap/extension-placeholder": "*",
+		"@tiptap/extension-text-align": "*",
 		"@tiptap/starter-kit": "*"
 	}
 }
