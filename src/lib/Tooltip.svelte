@@ -29,10 +29,22 @@
 			Strike
 		</button>
 		<button
+			on:click={() => editor.chain().focus().setTextAlign('left').run()}
+			class:active={editor.isActive('strike')}
+		>
+			Left
+		</button>
+		<button
 			on:click={() => editor.chain().focus().setTextAlign('center').run()}
 			class:active={editor.isActive('strike')}
 		>
 			Center
+		</button>
+		<button
+			on:click={() => editor.chain().focus().setTextAlign('right').run()}
+			class:active={editor.isActive('strike')}
+		>
+			Right
 		</button>
 
 		<span>|</span>
@@ -77,7 +89,7 @@
 		justify-content: center;
 		align-items: auto;
 		align-content: start;
-		background-color: white;
+		background-color: inherit;
 		filter: drop-shadow(0 0 0.1rem grey);
 	}
 

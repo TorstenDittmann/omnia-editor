@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
-	import { Editor } from '@tiptap/core';
+	import { Editor, FocusPosition } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
 	import BubbleMenu from '@tiptap/extension-bubble-menu';
 	import FloatingMenu from '@tiptap/extension-floating-menu';
@@ -10,17 +10,74 @@
 	import Float from './Float.svelte';
 	import Tooltip from './Tooltip.svelte';
 
+	/**
+	 * Initial value of the content.
+	 */
+	export let value: string = '';
+	/**
+	 * TipTap instance of the Editor.
+	 */
 	export let editor: Editor = undefined;
+	/**
+	 * Use spellcheck.
+	 */
 	export let spellcheck: boolean = false;
+	/**
+	 * Get the document as JSON.
+	 */
 	export const getJSON = () => editor?.getJSON();
+	/**
+	 * Get the document as HTML.
+	 */
 	export const getHTML = () => editor?.getHTML();
+	/**
+	 * Get the number of characters for the current document.
+	 */
 	export const getCharacterCount = () => editor?.getCharacterCount();
+	/**
+	 * Returns `true` when Editor is focused.
+	 */
 	export const isFocused = () => editor?.isFocused;
+	/**
+	 * Returns `true` if there is no content.
+	 */
 	export const isEmpty = () => editor?.isEmpty;
+	/**
+	 * Removes focus from the editor.
+	 */
 	export const blur = () => editor?.commands.blur();
-	export const focus = () => editor?.commands.focus();
+	/**
+	 * Focus the editor at the given position.
+	 *
+	 * @param position
+	 * Set the focus to the editor
+	 * focus()
+	 *
+	 * Set the cursor to the first position
+	 * focus('start')
+	 *
+	 * Set the cursor to the last position
+	 * focus('end')
+	 *
+	 * Selects the whole document
+	 * focus('all')
+	 *
+	 * Set the cursor to position 10
+	 * focus(10)
+	 */
+	export const focus = (position?: FocusPosition) => editor?.commands.focus(position);
+	/**
+	 * Undo recent changes.
+	 */
 	export const undo = () => editor?.commands.undo();
+	/**
+	 * Reapply reverted changes
+	 */
 	export const redo = () => editor?.commands.redo();
+	/**
+	 * Destroy the editor.
+	 */
+	export const destroy = () => editor?.destroy();
 
 	const dispatch = createEventDispatcher();
 
@@ -46,10 +103,10 @@
 					className: 'focus'
 				}),
 				TextAlign.configure({
-					types: ['heading', 'paragraph'],
+					types: ['heading', 'paragraph']
 				})
 			],
-			content: '<h1 style="text-align: center">omnia-editor</h1><p style="text-align: center">A lightweight open source block style editor built for the modern web.</p><h2 style="text-align: center">Installation</h2><p style="text-align: center"><em>npm i omnia-editor</em></p><h2 style="text-align: center">Usage</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Blandit libero volutpat sed cras. Purus semper eget duis at. Mi eget mauris pharetra et ultrices neque. Aliquet bibendum enim facilisis gravida neque convallis. Tellus id interdum velit laoreet id. Adipiscing commodo elit at imperdiet dui accumsan sit amet nulla. Magna eget est lorem ipsum dolor. Quam quisque id diam vel quam elementum pulvinar. Amet venenatis urna cursus eget nunc scelerisque viverra. Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Dui ut ornare lectus sit. Nulla facilisi cras fermentum odio eu feugiat. A erat nam at lectus urna. Nam aliquam sem et tortor consequat. Mi proin sed libero enim sed faucibus turpis in. Ut venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Ultricies mi eget mauris pharetra et ultrices. Semper viverra nam libero justo. Tempus quam pellentesque nec nam.</p><h1 style="text-align: center">Lorem Ipsum</h1><p>Id donec ultrices tincidunt arcu non sodales. Eget mauris pharetra et ultrices neque ornare aenean. Risus commodo viverra maecenas accumsan lacus. Vitae tempus quam pellentesque nec nam aliquam sem et. Mauris nunc congue nisi vitae suscipit tellus. Commodo ullamcorper a lacus vestibulum. Auctor augue mauris augue neque gravida in fermentum. Dictumst quisque sagittis purus sit amet. Convallis convallis tellus id interdum velit laoreet id. Scelerisque eu ultrices vitae auctor eu augue. Eu non diam phasellus vestibulum lorem sed risus ultricies tristique. Nec ullamcorper sit amet risus nullam. Euismod lacinia at quis risus.</p><p>Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Est ultricies integer quis auctor. Cum sociis natoque penatibus et magnis dis parturient. Egestas egestas fringilla phasellus faucibus scelerisque eleifend donec. Ut placerat orci nulla pellentesque dignissim enim. Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue. Sit amet volutpat consequat mauris nunc congue nisi vitae suscipit. Fermentum odio eu feugiat pretium nibh ipsum. Aliquet nibh praesent tristique magna sit. Porttitor eget dolor morbi non arcu risus quis varius quam. Diam in arcu cursus euismod quis viverra nibh. Mattis pellentesque id nibh tortor id aliquet.</p><p>Enim lobortis scelerisque fermentum dui faucibus in ornare quam. Tempus iaculis urna id volutpat lacus laoreet non. Orci a scelerisque purus semper eget duis at tellus. Morbi tincidunt ornare massa eget egestas purus viverra accumsan. Ut etiam sit amet nisl. Id semper risus in hendrerit gravida rutrum quisque non tellus. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut placerat. Vitae sapien pellentesque habitant morbi tristique senectus. Gravida quis blandit turpis cursus in hac. Lacus viverra vitae congue eu consequat ac felis. Vitae justo eget magna fermentum iaculis eu. Eros donec ac odio tempor. Lacus viverra vitae congue eu. Pretium viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Maecenas accumsan lacus vel facilisis volutpat.</p>',
+			content: value,
 			onCreate: () => dispatch('init'),
 			onFocus: () => dispatch('focus'),
 			onBlur: () => dispatch('blur'),
@@ -85,12 +142,20 @@
 </div>
 
 <style lang="scss" global>
+	@import 'sass/mixins';
+
+	.omnia-editor {
+		--omnia-editor-bg-color: white;
+		--omnia-editor-text-color: black;
+	}
+
 	.ProseMirror {
 		width: 100%;
 		margin-left: auto;
 		margin-right: auto;
 		text-align: justify;
-		background-color: inherit;
+		background-color: var(--omnia-editor-bg-color);
+		color: var(--omnia-editor-text-color);
 		outline: 0;
 
 		> * {
@@ -101,6 +166,11 @@
 		blockquote {
 			line-height: 2.5rem;
 			padding: 0 1rem;
+
+			@include on-mobile {
+				padding: 0;
+				line-height: 1.5rem;
+			}
 		}
 
 		> blockquote {
@@ -115,11 +185,6 @@
 					opacity: 0.4;
 				}
 			}
-		}
-	}
-	@media (max-width: 960px) {
-		.ProseMirror {
-			line-height: 2rem;
 		}
 	}
 </style>
