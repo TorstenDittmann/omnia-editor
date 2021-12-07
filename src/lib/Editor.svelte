@@ -121,24 +121,26 @@
 	onDestroy(() => {
 		if (editor) {
 			editor.destroy();
+			editor = null;
 		}
 	});
 </script>
 
-<div
-	{spellcheck}
-	bind:this={element}
-	class="omnia-editor"
-	autocapitalize="off"
-	autocorrect={spellcheck ? 'on' : 'off'}
->
-	<div class="ProseMirror" />
-</div>
-<div bind:this={floating}>
-	<Float {editor} />
-</div>
-<div bind:this={tooltip}>
-	<Tooltip {editor} />
+<div class="omnia-editor">
+	<div
+		{spellcheck}
+		bind:this={element}
+		autocapitalize="off"
+		autocorrect={spellcheck ? 'on' : 'off'}
+	>
+		<div class="ProseMirror" />
+	</div>
+	<div bind:this={floating}>
+		<Float {editor} />
+	</div>
+	<div bind:this={tooltip}>
+		<Tooltip {editor} />
+	</div>
 </div>
 
 <style lang="scss" global>

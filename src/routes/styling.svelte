@@ -1,13 +1,23 @@
 <script lang="ts">
+	import { OmniaEditor } from '$lib';
+	let value =
+		'<h1 style="text-align: center">omnia-editor</h1><p style="text-align: center">A lightweight open source block style editor built for the modern web.</p><h2 style="text-align: center">Installation</h2><p style="text-align: center"><em>npm i omnia-editor</em></p><h2 style="text-align: center">Usage</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Blandit libero volutpat sed cras. Purus semper eget duis at. Mi eget mauris pharetra et ultrices neque. Aliquet bibendum enim facilisis gravida neque convallis. Tellus id interdum velit laoreet id. Adipiscing commodo elit at imperdiet dui accumsan sit amet nulla. Magna eget est lorem ipsum dolor. Quam quisque id diam vel quam elementum pulvinar. Amet venenatis urna cursus eget nunc scelerisque viverra. Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Dui ut ornare lectus sit. Nulla facilisi cras fermentum odio eu feugiat. A erat nam at lectus urna. Nam aliquam sem et tortor consequat. Mi proin sed libero enim sed faucibus turpis in. Ut venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Ultricies mi eget mauris pharetra et ultrices. Semper viverra nam libero justo. Tempus quam pellentesque nec nam.</p><h1 style="text-align: center">Lorem Ipsum</h1><p>Id donec ultrices tincidunt arcu non sodales. Eget mauris pharetra et ultrices neque ornare aenean. Risus commodo viverra maecenas accumsan lacus. Vitae tempus quam pellentesque nec nam aliquam sem et. Mauris nunc congue nisi vitae suscipit tellus. Commodo ullamcorper a lacus vestibulum. Auctor augue mauris augue neque gravida in fermentum. Dictumst quisque sagittis purus sit amet. Convallis convallis tellus id interdum velit laoreet id. Scelerisque eu ultrices vitae auctor eu augue. Eu non diam phasellus vestibulum lorem sed risus ultricies tristique. Nec ullamcorper sit amet risus nullam. Euismod lacinia at quis risus.</p><p>Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Est ultricies integer quis auctor. Cum sociis natoque penatibus et magnis dis parturient. Egestas egestas fringilla phasellus faucibus scelerisque eleifend donec. Ut placerat orci nulla pellentesque dignissim enim. Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue. Sit amet volutpat consequat mauris nunc congue nisi vitae suscipit. Fermentum odio eu feugiat pretium nibh ipsum. Aliquet nibh praesent tristique magna sit. Porttitor eget dolor morbi non arcu risus quis varius quam. Diam in arcu cursus euismod quis viverra nibh. Mattis pellentesque id nibh tortor id aliquet.</p><p>Enim lobortis scelerisque fermentum dui faucibus in ornare quam. Tempus iaculis urna id volutpat lacus laoreet non. Orci a scelerisque purus semper eget duis at tellus. Morbi tincidunt ornare massa eget egestas purus viverra accumsan. Ut etiam sit amet nisl. Id semper risus in hendrerit gravida rutrum quisque non tellus. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut placerat. Vitae sapien pellentesque habitant morbi tristique senectus. Gravida quis blandit turpis cursus in hac. Lacus viverra vitae congue eu consequat ac felis. Vitae justo eget magna fermentum iaculis eu. Eros donec ac odio tempor. Lacus viverra vitae congue eu. Pretium viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Maecenas accumsan lacus vel facilisis volutpat.</p>';
 </script>
 
 <div class="dark">
-test
+	<OmniaEditor {value} />
 </div>
 
-<style global>
-	.omnia-editor {
-		--omnia-editor-bg-color: black;
-		--omnia-editor-text-color: white;
+<style>
+	.dark {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		background-color: #272822;
+	}
+	:global(.dark .omnia-editor) {
+		--omnia-editor-bg-color: #272822;
+		--omnia-editor-text-color: #f8f8f2;
+		max-width: 700px;
 	}
 </style>

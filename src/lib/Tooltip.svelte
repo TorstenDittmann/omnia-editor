@@ -89,7 +89,8 @@
 		justify-content: center;
 		align-items: auto;
 		align-content: start;
-		background-color: inherit;
+		background-color: var(--omnia-editor-bg-color);
+		color: var(--omnia-editor-text-color);
 		filter: drop-shadow(0 0 0.1rem grey);
 	}
 
@@ -100,10 +101,15 @@
 		cursor: pointer;
 		transition: transform 0.1s;
 		opacity: 0.4;
+		color: var(--omnia-editor-text-color);
 
 		&.active,
 		&:hover:not(:focus) {
 			opacity: 1;
+		}
+
+		:global(svg) {
+			fill: var(--omnia-editor-text-color);
 		}
 	}
 	button:hover {
