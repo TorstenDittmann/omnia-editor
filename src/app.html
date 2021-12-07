@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet" />
+		<style>
+			body {
+				margin: 0;
+			}
+			#editor {
+				font-family: Lora, sans-serif;
+				font-size: 1.1rem;
+				background-color: white;
+				--background-color: white;
+				margin: auto;
+			}
+		</style>
+		%svelte.head%
+	</head>
+	<body>
+		<div id="editor">%svelte.body%</div>
+	</body>
+</html>

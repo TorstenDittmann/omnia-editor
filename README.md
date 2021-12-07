@@ -3,13 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-```bash
-git clone https://github.com/torstendittmann/omnia-editor
-cd omnia-editor
-npm install # or yarn
-```
-
-## Implementing
+## Usage in Svelte
 
 ```bash
 npm i omnia-editor
@@ -17,87 +11,84 @@ npm i omnia-editor
 yarn add omnia-editor
 ```
 
-```javascript
-import Editor from "omnia-editor";
-const editor = new Editor({
-        target: document.getElementById("editor"),
-        props: {
-          active: true,
-          spellCheck: true
-       }
-    });
+```svelte
+<script>
+import { OmniaEditor } from "omnia-editor";
+</script>
+
+<OmniaEditor />
 ```
 
-## API
+## Properties
 
-### `const editor = new Editor({opts})`
-- __opts.target__ default: `none` An HTMLElement to render to. This option is required.
-- __anchor__ default: `null` A child of target to render the component immediately before.
-- __intro__ default: `false` If true, will play transitions on initial render, rather than waiting for subsequent state changes.
-- __props__ default: `{}` An object of properties to supply to the component. See below.
+### **value**_: string;_
+Initial value of the content.
 
-#### `props`
-- __data__ default: `{}` A JSON object to pass content.
-- __active__ default: `true` If true, content can be edited.
-- __spellCheck__ default: `false` If true, content can be edited.
-- __placeholder__ default: `true` Placeholder for paragraphs.
-- __confirmDelete__ default: `true` Confirm dialog before deleting a block.
+### **editor**_: Editor;_
+TipTap instance of the Editor.
 
-### `editor.getContent()`
-Gets the content from the editor as a JSON object.
+### **spellcheck**_: boolean;_
+Use spellcheck.
 
-### `editor.update()`
-Re-initializes the instance.
+## Methods
 
-### `editor.setActive(boolean)`
-Enables or disables the editor.
+### **getJSON()**_: Object;_
+Get the document as JSON.
+### **getHTML()**_: string;_
+Get the document as HTML.
 
-### `editor.toggleFormat(tag)`
-Formats the current selection with passed tag. Available tags:
-- __bold__
-- __underline__
-- __italic__
+### **getCharacterCount()**_: number;_
+Get the number of characters for the current document.
 
-### `editor.history.subscribe(callback)`
-Subscribes to history changes.
-```javascript
-callback = {
-  current: 0 //current history position
-  data: [...] //history snapshots
-}
-```
+### **isFocused()**_: boolean;_
+Returns `true` when Editor is focused.
 
-### `editor.history.undo()`
-Undo changes if possible.
+### **isEmpty()**_: boolean;_
+Returns `true` if there is no content.
 
-### `editor.history.redo()`
-Redo changes if possible.
+### **blur()**_: boolean;_
+Removes focus from the editor.
 
-### `editor.$destroy()`
-Removes the instance from the DOM and triggers the `destroy` handler.
+### **focus(position)**_: boolean;_
+Focus the editor at the given position.
+
+Set the focus to the editor
+```focus()```
+
+Set the cursor to the first position
+```focus('start')```
+
+Set the cursor to the last position
+```focus('end')```
+
+Selects the whole document
+```focus('all')```
+
+Set the cursor to position 10
+```focus(10)```
+
+### **undo()**_: boolean;_
+Undo recent changes.
+
+### **redo()**_: boolean;_
+Reapply reverted changes.
+
+### **destroy()**_: void;_
+Destroy the editor.
 
 ## Events
 
-`editor.$on(event, callback)`
-Causes the callback function to be called whenever the component dispatches an event.
-A function is returned that will remove the event listener when called.
-```javascript
-const off = app.$on('change', event => {
-	console.log("content changed");
-});
+### **on:init**
+Triggered when the editor is initialized.
 
-off();
-```
-- __init__: Fires after loading the editor.
-- __input__: Fires after keyboard input.
-- __change__: Fires after the content was successfully changed.
+### **on:focus**
+Triggered when the editor is focused.
 
+### **on:blur**
+Triggered when the editor looses focus.
 
-## Consuming
-
-The package.json has a `"svelte"` field pointing to `src/index.js`, which allows Svelte apps to import the source code directly, if they are using a bundler plugin like [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) or [svelte-loader](https://github.com/sveltejs/svelte-loader) (where [`resolve.mainFields`](https://webpack.js.org/configuration/resolve/#resolve-mainfields) in your webpack config includes `"svelte"`). **This is recommended.**
-
-For everyone else, `npm run build` will bundle omnia-editor's source code into a plain JavaScript module (`dist/index.mjs`) and a UMD script (`dist/index.js`).
+### **on:change**
+Triggered when the editors content changes.
 
 ## Contributors ✨
 
